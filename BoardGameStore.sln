@@ -3,11 +3,21 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.8.34322.80
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BoardGameStore.WebAPI", "BoardGameStore.WebAPI\BoardGameStore.WebAPI.csproj", "{59068147-1C05-465F-871F-697DEBA8FD6C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BoardGameStore.WebAPI", "BoardGameStore.WebAPI\BoardGameStore.WebAPI.csproj", "{59068147-1C05-465F-871F-697DEBA8FD6C}"
+	ProjectSection(ProjectDependencies) = postProject
+		{1066F67A-2991-47DC-9EA0-4D1732F27D71} = {1066F67A-2991-47DC-9EA0-4D1732F27D71}
+	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BoardGameStore.Data", "BoardGameStore.Data\BoardGameStore.Data.csproj", "{12D253FF-D51A-42C5-9B69-B1A03753E210}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BoardGameStore.Application", "BoardGameStore.Application\BoardGameStore.Application.csproj", "{1066F67A-2991-47DC-9EA0-4D1732F27D71}"
+	ProjectSection(ProjectDependencies) = postProject
+		{F23C691E-8DF8-43E9-977E-F4A17558CDF4} = {F23C691E-8DF8-43E9-977E-F4A17558CDF4}
+	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BoardGameStore.Application", "BoardGameStore.Application\BoardGameStore.Application.csproj", "{1066F67A-2991-47DC-9EA0-4D1732F27D71}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BoardGameStore.Domain", "BoardGameStore.Domain\BoardGameStore.Domain.csproj", "{F23C691E-8DF8-43E9-977E-F4A17558CDF4}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BoardGameStore.Infrastructure.Dapper", "BoardGameStore.Infrastructure.Dapper\BoardGameStore.Infrastructure.Dapper.csproj", "{91173FCF-B03A-4142-8ABF-D6B8C752325A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BoardGameStore.Infrastructure.EFCore", "BoardGameStore.Infrastructure.EFCore\BoardGameStore.Infrastructure.EFCore.csproj", "{92F431F1-C901-480A-8047-73A5C6F59F7C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -19,14 +29,22 @@ Global
 		{59068147-1C05-465F-871F-697DEBA8FD6C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{59068147-1C05-465F-871F-697DEBA8FD6C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{59068147-1C05-465F-871F-697DEBA8FD6C}.Release|Any CPU.Build.0 = Release|Any CPU
-		{12D253FF-D51A-42C5-9B69-B1A03753E210}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{12D253FF-D51A-42C5-9B69-B1A03753E210}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{12D253FF-D51A-42C5-9B69-B1A03753E210}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{12D253FF-D51A-42C5-9B69-B1A03753E210}.Release|Any CPU.Build.0 = Release|Any CPU
 		{1066F67A-2991-47DC-9EA0-4D1732F27D71}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{1066F67A-2991-47DC-9EA0-4D1732F27D71}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1066F67A-2991-47DC-9EA0-4D1732F27D71}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1066F67A-2991-47DC-9EA0-4D1732F27D71}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F23C691E-8DF8-43E9-977E-F4A17558CDF4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F23C691E-8DF8-43E9-977E-F4A17558CDF4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F23C691E-8DF8-43E9-977E-F4A17558CDF4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F23C691E-8DF8-43E9-977E-F4A17558CDF4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{91173FCF-B03A-4142-8ABF-D6B8C752325A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{91173FCF-B03A-4142-8ABF-D6B8C752325A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{91173FCF-B03A-4142-8ABF-D6B8C752325A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{91173FCF-B03A-4142-8ABF-D6B8C752325A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{92F431F1-C901-480A-8047-73A5C6F59F7C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{92F431F1-C901-480A-8047-73A5C6F59F7C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{92F431F1-C901-480A-8047-73A5C6F59F7C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{92F431F1-C901-480A-8047-73A5C6F59F7C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
