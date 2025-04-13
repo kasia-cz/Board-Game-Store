@@ -4,9 +4,6 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 VisualStudioVersion = 17.8.34322.80
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BoardGameStore.WebAPI", "BoardGameStore.WebAPI\BoardGameStore.WebAPI.csproj", "{59068147-1C05-465F-871F-697DEBA8FD6C}"
-	ProjectSection(ProjectDependencies) = postProject
-		{1066F67A-2991-47DC-9EA0-4D1732F27D71} = {1066F67A-2991-47DC-9EA0-4D1732F27D71}
-	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BoardGameStore.Application", "BoardGameStore.Application\BoardGameStore.Application.csproj", "{1066F67A-2991-47DC-9EA0-4D1732F27D71}"
 	ProjectSection(ProjectDependencies) = postProject
