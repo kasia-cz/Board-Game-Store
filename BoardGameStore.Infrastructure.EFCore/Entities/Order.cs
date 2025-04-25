@@ -1,4 +1,6 @@
-﻿namespace BoardGameStore.Infrastructure.EFCore.Entities
+﻿using BoardGameStore.Domain.Enums;
+
+namespace BoardGameStore.Infrastructure.EFCore.Entities
 {
     public class Order
     {
@@ -14,14 +16,5 @@
         public User User { get; set; }
 
         public List<OrderItem> Items { get; set; }
-    }
-
-    public enum OrderStatus
-    {
-        Pending,
-        InProgress,
-        Cancelled,
-        Completed,
-        Returned
     }
 }

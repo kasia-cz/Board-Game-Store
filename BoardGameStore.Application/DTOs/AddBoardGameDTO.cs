@@ -1,12 +1,9 @@
 ﻿using BoardGameStore.Domain.Enums;
-using BoardGameStore.Domain.Models;
 
-namespace BoardGameStore.Infrastructure.EFCore.Entities
+namespace BoardGameStore.Application.DTOs
 {
-    public class BoardGame
+    public class AddBoardGameDTO
     {
-        public int Id { get; set; }
-
         public string Name { get; set; }
 
         public int Year { get; set; }
@@ -20,7 +17,5 @@ namespace BoardGameStore.Infrastructure.EFCore.Entities
         public int AvailableQuantity { get; set; }
 
         public decimal Price { get; set; }
-
-        public List<OrderItem> OrderItems { get; set; }
     }
 }
