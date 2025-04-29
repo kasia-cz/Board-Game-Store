@@ -1,9 +1,9 @@
-﻿using BoardGameStore.Domain.Models;
-
-namespace BoardGameStore.Application.DTOs
+﻿namespace BoardGameStore.Application.DTOs.BoardGameDTOs
 {
     public class ReturnBoardGameDTO
     {
+        public int Id { get; set; }
+
         public string Name { get; set; }
 
         public int Year { get; set; }

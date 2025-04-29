@@ -1,4 +1,4 @@
-﻿using BoardGameStore.Application.DTOs;
+﻿using BoardGameStore.Application.DTOs.BoardGameDTOs;
 using BoardGameStore.Application.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
@@ -44,7 +44,7 @@ namespace BoardGameStore.WebAPI.Controllers
         }
 
         [HttpPut("{id}")]
-        public async Task<ActionResult> UpdatePet(int id, AddBoardGameDTO addBoardGameDTO)
+        public async Task<ActionResult> UpdateBoardGame(int id, AddBoardGameDTO addBoardGameDTO)
         {
             await _boardGameAppService.UpdateBoardGame(id, addBoardGameDTO);
             return NoContent();

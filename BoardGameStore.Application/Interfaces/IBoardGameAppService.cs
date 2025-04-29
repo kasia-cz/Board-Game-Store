@@ -1,4 +1,4 @@
-﻿using BoardGameStore.Application.DTOs;
+﻿using BoardGameStore.Application.DTOs.BoardGameDTOs;
 
 namespace BoardGameStore.Application.Interfaces
 {

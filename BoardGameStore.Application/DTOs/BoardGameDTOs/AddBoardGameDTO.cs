@@ -1,6 +1,6 @@
 ﻿using BoardGameStore.Domain.Enums;
 
-namespace BoardGameStore.Application.DTOs
+namespace BoardGameStore.Application.DTOs.BoardGameDTOs
 {
     public class AddBoardGameDTO
     {

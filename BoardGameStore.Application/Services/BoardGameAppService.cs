@@ -1,4 +1,4 @@
-﻿using BoardGameStore.Application.DTOs;
+﻿using BoardGameStore.Application.DTOs.BoardGameDTOs;
 using BoardGameStore.Application.Interfaces;
 using BoardGameStore.Domain.Interfaces;
 using BoardGameStore.Domain.Models;
@@ -17,17 +17,7 @@ namespace BoardGameStore.Application.Services
 
         public async Task AddBoardGame(AddBoardGameDTO addBoardGameDTO)
         {
-            var boardGameModel = new BoardGameModel
-            {
-                Name = addBoardGameDTO.Name,
-                Year = addBoardGameDTO.Year,
-                MinPlayers = addBoardGameDTO.MinPlayers,
-                MaxPlayers = addBoardGameDTO.MaxPlayers,
-                Difficulty = addBoardGameDTO.Difficulty,
-                AvailableQuantity = addBoardGameDTO.AvailableQuantity,
-                Price = addBoardGameDTO.Price
-            };
-
+            var boardGameModel = MapAddBoardGameDtoToModel(addBoardGameDTO);
             await _boardGameService.AddBoardGame(boardGameModel);
         }
 
@@ -39,36 +29,26 @@ namespace BoardGameStore.Application.Services
         public async Task<List<ReturnBoardGameShortDTO>> GetAllBoardGames()
         {
             var boardGameModels = await _boardGameService.GetAllBoardGames();
-            var boardGames = boardGameModels.Select(boardGameModel => new ReturnBoardGameShortDTO
-            {
-                Name = boardGameModel.Name,
-                IsAvailable = boardGameModel.AvailableQuantity > 0,
-                Price = boardGameModel.Price
-            }).ToList();
 
-            return boardGames;
+            return boardGameModels.Select(MapBoardGameModelToReturnBoardGameShortDTO).ToList();
         }
 
         public async Task<ReturnBoardGameDTO> GetBoardGameById(int id)
         {
             var boardGameModel = await _boardGameService.GetBoardGameById(id);
 
-            var returnBoardGameDTO = new ReturnBoardGameDTO
-            {
-                Name = boardGameModel.Name,
-                Year = boardGameModel.Year,
-                PlayersNumber = $"{boardGameModel.MinPlayers}-{boardGameModel.MaxPlayers}",
-                Difficulty = boardGameModel.Difficulty.ToString(),
-                IsAvailable = boardGameModel.AvailableQuantity > 0,
-                Price = boardGameModel.Price
-            };
-
-            return returnBoardGameDTO;
+            return MapBoardGameModelToReturnBoardGameDTO(boardGameModel);
         }
 
         public async Task UpdateBoardGame(int id, AddBoardGameDTO addBoardGameDTO)
         {
-            var boardGameModel = new BoardGameModel
+            var boardGameModel = MapAddBoardGameDtoToModel(addBoardGameDTO);
+            await _boardGameService.UpdateBoardGame(id, boardGameModel);
+        }
+
+        private static BoardGameModel MapAddBoardGameDtoToModel(AddBoardGameDTO addBoardGameDTO)
+        {
+            return new BoardGameModel
             {
                 Name = addBoardGameDTO.Name,
                 Year = addBoardGameDTO.Year,
@@ -78,8 +58,31 @@ namespace BoardGameStore.Application.Services
                 AvailableQuantity = addBoardGameDTO.AvailableQuantity,
                 Price = addBoardGameDTO.Price
             };
+        }
 
-            await _boardGameService.UpdateBoardGame(id, boardGameModel);
+        private static ReturnBoardGameDTO MapBoardGameModelToReturnBoardGameDTO(BoardGameModel boardGameModel)
+        {
+            return new ReturnBoardGameDTO
+            {
+                Id = boardGameModel.Id,
+                Name = boardGameModel.Name,
+                Year = boardGameModel.Year,
+                PlayersNumber = $"{boardGameModel.MinPlayers}-{boardGameModel.MaxPlayers}",
+                Difficulty = boardGameModel.Difficulty.ToString(),
+                IsAvailable = boardGameModel.AvailableQuantity > 0,
+                Price = boardGameModel.Price
+            };
+        }
+
+        private static ReturnBoardGameShortDTO MapBoardGameModelToReturnBoardGameShortDTO(BoardGameModel boardGameModel)
+        {
+            return new ReturnBoardGameShortDTO
+            {
+                Id = boardGameModel.Id,
+                Name = boardGameModel.Name,
+                IsAvailable = boardGameModel.AvailableQuantity > 0,
+                Price = boardGameModel.Price
+            };
         }
     }
 }

@@ -32,9 +32,8 @@ namespace BoardGameStore.Infrastructure.EFCore.Repositories
         public async Task<List<BoardGameModel>> GetAllBoardGames()
         {
             var boardGames = await _context.BoardGames.ToListAsync();
-            var boardGameModels = boardGames.Select(boardGame => MapBoardGameEntityToModel(boardGame)).ToList();
 
-            return boardGameModels;
+            return boardGames.Select(MapBoardGameEntityToModel).ToList();
         }
 
         public async Task<BoardGameModel> GetBoardGameById(int id)
