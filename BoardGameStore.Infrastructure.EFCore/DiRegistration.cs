@@ -9,6 +9,7 @@ namespace BoardGameStore.Infrastructure.EFCore
         public static IServiceCollection AddEFCoreRepositories(this IServiceCollection collection)
         {
             collection.AddScoped<IBoardGameRepository, BoardGameRepository>();
+            collection.AddScoped<IUserRepository, UserRepository>();
             return collection;
         }
     }

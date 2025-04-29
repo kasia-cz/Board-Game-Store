@@ -9,6 +9,7 @@ namespace BoardGameStore.Application
         public static IServiceCollection AddApplicationServices(this IServiceCollection collection)
         {
             collection.AddScoped<IBoardGameAppService, BoardGameAppService>();
+            collection.AddScoped<IUserAppService, UserAppService>();
             return collection;
         }
     }

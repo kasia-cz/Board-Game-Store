@@ -9,6 +9,7 @@ namespace BoardGameStore.Domain
         public static IServiceCollection AddDomainServices(this IServiceCollection collection)
         {
             collection.AddScoped<IBoardGameService, BoardGameService>();
+            collection.AddScoped<IUserService, UserService>();
             return collection;
         }
     }
