@@ -54,12 +54,11 @@ namespace BoardGameStore.Infrastructure.EFCore.Repositories
 
             if (userModel.Address != null)
             {
-                userToUpdate.Address = new Address
-                {
-                    City = userModel.Address.City,
-                    AddressLine = userModel.Address.AddressLine,
-                    PostalCode = userModel.Address.PostalCode,
-                };
+                userToUpdate.Address ??= new Address();
+
+                userToUpdate.Address.City = userModel.Address.City;
+                userToUpdate.Address.AddressLine = userModel.Address.AddressLine;
+                userToUpdate.Address.PostalCode = userModel.Address.PostalCode;
             }
             else
             {
