@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BoardGameStore.Infrastructure.EFCore.Migrations
 {
     [DbContext(typeof(DbContextEFCore))]
-    [Migration("20250423214411_InitialCreate")]
+    [Migration("20250503192827_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -178,48 +178,37 @@ namespace BoardGameStore.Infrastructure.EFCore.Migrations
 
             modelBuilder.Entity("BoardGameStore.Infrastructure.EFCore.Entities.Address", b =>
                 {
-                    b.HasOne("BoardGameStore.Infrastructure.EFCore.Entities.User", "User")
+                    b.HasOne("BoardGameStore.Infrastructure.EFCore.Entities.User", null)
                         .WithOne("Address")
                         .HasForeignKey("BoardGameStore.Infrastructure.EFCore.Entities.Address", "UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("BoardGameStore.Infrastructure.EFCore.Entities.Order", b =>
                 {
-                    b.HasOne("BoardGameStore.Infrastructure.EFCore.Entities.User", "User")
+                    b.HasOne("BoardGameStore.Infrastructure.EFCore.Entities.User", null)
                         .WithMany("Orders")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("BoardGameStore.Infrastructure.EFCore.Entities.OrderItem", b =>
                 {
                     b.HasOne("BoardGameStore.Infrastructure.EFCore.Entities.BoardGame", "BoardGame")
-                        .WithMany("OrderItems")
+                        .WithMany()
                         .HasForeignKey("BoardGameId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("BoardGameStore.Infrastructure.EFCore.Entities.Order", "Order")
+                    b.HasOne("BoardGameStore.Infrastructure.EFCore.Entities.Order", null)
                         .WithMany("Items")
                         .HasForeignKey("OrderId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("BoardGame");
-
-                    b.Navigation("Order");
-                });
-
-            modelBuilder.Entity("BoardGameStore.Infrastructure.EFCore.Entities.BoardGame", b =>
-                {
-                    b.Navigation("OrderItems");
                 });
 
             modelBuilder.Entity("BoardGameStore.Infrastructure.EFCore.Entities.Order", b =>

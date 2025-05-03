@@ -20,7 +20,5 @@ namespace BoardGameStore.Infrastructure.EFCore.Entities
         public int AvailableQuantity { get; set; }
 
         public decimal Price { get; set; }
-
-        public List<OrderItem> OrderItems { get; set; }
     }
 }

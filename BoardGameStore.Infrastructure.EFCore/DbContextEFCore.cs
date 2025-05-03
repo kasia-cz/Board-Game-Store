@@ -17,13 +17,13 @@ namespace BoardGameStore.Infrastructure.EFCore
         {
             modelBuilder.Entity<Order>()
                 .HasMany(o => o.Items)
-                .WithOne(i => i.Order)
+                .WithOne()
                 .HasForeignKey(i => i.OrderId)
                 .OnDelete(DeleteBehavior.Cascade);
 
             modelBuilder.Entity<OrderItem>()
                 .HasOne(i => i.BoardGame)
-                .WithMany(g => g.OrderItems)
+                .WithMany()
                 .HasForeignKey(i => i.BoardGameId);
         }
     }

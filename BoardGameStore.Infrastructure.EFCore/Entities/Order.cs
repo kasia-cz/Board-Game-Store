@@ -13,7 +13,6 @@ namespace BoardGameStore.Infrastructure.EFCore.Entities
         public OrderStatus Status {  get; set; }
 
         public int UserId { get; set; }
-        public User User { get; set; }
 
         public List<OrderItem> Items { get; set; }
     }
