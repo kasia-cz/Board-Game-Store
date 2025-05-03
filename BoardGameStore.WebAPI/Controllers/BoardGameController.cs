@@ -16,7 +16,7 @@ namespace BoardGameStore.WebAPI.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<ReturnBoardGameDTO>> AddBoardGame(AddBoardGameDTO addBoardGameDTO)
+        public async Task<ActionResult> AddBoardGame(AddBoardGameDTO addBoardGameDTO)
         {
             await _boardGameAppService.AddBoardGame(addBoardGameDTO);
             return NoContent();

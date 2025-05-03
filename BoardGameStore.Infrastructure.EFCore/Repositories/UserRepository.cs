@@ -73,7 +73,6 @@ namespace BoardGameStore.Infrastructure.EFCore.Repositories
         {
             var user = new User
             {
-                Id = userModel.Id,
                 FirstName = userModel.FirstName,
                 LastName = userModel.LastName,
                 Email = userModel.Email,
@@ -85,7 +84,6 @@ namespace BoardGameStore.Infrastructure.EFCore.Repositories
             {
                 user.Address = new Address
                 {
-                    Id = userModel.Address.Id,
                     City = userModel.Address.City,
                     AddressLine = userModel.Address.AddressLine,
                     PostalCode = userModel.Address.PostalCode,

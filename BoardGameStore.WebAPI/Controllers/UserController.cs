@@ -14,9 +14,9 @@ namespace BoardGameStore.WebAPI.Controllers
         {
             _userAppService = userAppService;
         }
-
+        
         [HttpPost]
-        public async Task<ActionResult<ReturnUserDTO>> AddUser(AddUserDTO addUserDTO)
+        public async Task<ActionResult> AddUser(AddUserDTO addUserDTO)
         {
             await _userAppService.AddUser(addUserDTO);
             return NoContent();

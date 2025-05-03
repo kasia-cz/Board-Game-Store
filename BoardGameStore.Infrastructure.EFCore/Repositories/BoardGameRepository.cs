@@ -62,7 +62,6 @@ namespace BoardGameStore.Infrastructure.EFCore.Repositories
         {
             return new BoardGame
             {
-                Id = boardGameModel.Id,
                 Name = boardGameModel.Name,
                 Year = boardGameModel.Year,
                 MinPlayers = boardGameModel.MinPlayers,

@@ -9,6 +9,8 @@ namespace BoardGameStore.Infrastructure.Dapper
         public static IServiceCollection AddDapperRepositories(this IServiceCollection collection)
         {
             collection.AddScoped<IBoardGameRepository, BoardGameRepository>();
+            collection.AddScoped<IUserRepository, UserRepository>();
+            collection.AddScoped<IOrderRepository, OrderRepository>();
             return collection;
         }
     }

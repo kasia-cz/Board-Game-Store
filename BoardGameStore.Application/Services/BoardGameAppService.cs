@@ -80,7 +80,6 @@ namespace BoardGameStore.Application.Services
             {
                 Id = boardGameModel.Id,
                 Name = boardGameModel.Name,
-                IsAvailable = boardGameModel.AvailableQuantity > 0,
                 Price = boardGameModel.Price
             };
         }

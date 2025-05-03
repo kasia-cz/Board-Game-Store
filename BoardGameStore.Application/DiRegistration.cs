@@ -10,6 +10,7 @@ namespace BoardGameStore.Application
         {
             collection.AddScoped<IBoardGameAppService, BoardGameAppService>();
             collection.AddScoped<IUserAppService, UserAppService>();
+            collection.AddScoped<IOrderAppService, OrderAppService>();
             return collection;
         }
     }
