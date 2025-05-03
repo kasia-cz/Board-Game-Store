@@ -1,5 +1,4 @@
 ﻿using BoardGameStore.Domain.Enums;
-using BoardGameStore.Domain.Models;
 
 namespace BoardGameStore.Infrastructure.EFCore.Entities
 {

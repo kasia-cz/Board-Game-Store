@@ -2,7 +2,9 @@ using BoardGameStore.Application;
 using BoardGameStore.Domain;
 using BoardGameStore.Infrastructure.Dapper;
 using BoardGameStore.Infrastructure.EFCore;
+using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
+using System.Data;
 
 namespace BoardGameStore.WebAPI
 {
@@ -13,15 +15,17 @@ namespace BoardGameStore.WebAPI
             var builder = WebApplication.CreateBuilder(args);
 
             // DAPPER
-            // todo: add dbcontext
-            // builder.Services.AddDapperRepositories();
+            builder.Services.AddScoped<IDbConnection>(sp =>
+                new SqlConnection(builder.Configuration.GetConnectionString("DefaultConnection")));
+
+            builder.Services.AddDapperRepositories();
 
             // ENTITY FRAMEWORK CORE
-            builder.Services.AddDbContext<DbContextEFCore>(options =>
+            /*builder.Services.AddDbContext<DbContextEFCore>(options =>
             {
                 options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
             });
-            builder.Services.AddEFCoreRepositories();
+            builder.Services.AddEFCoreRepositories();*/
 
             // Services unrelated to ORM
             builder.Services.AddDomainServices();
