@@ -1,23 +1,24 @@
 ﻿using BoardGameStore.Application.DTOs.BoardGameDTOs;
 using BoardGameStore.Application.Interfaces;
+using BoardGameStore.Application.Mapping;
 using BoardGameStore.Domain.Interfaces;
-using BoardGameStore.Domain.Models;
 
 namespace BoardGameStore.Application.Services
 {
     public class BoardGameAppService : IBoardGameAppService
     {
         private readonly IBoardGameService _boardGameService;
-        // todo: add mappers
+        private readonly IMapper _mapper;
 
-        public BoardGameAppService(IBoardGameService boardGameService)
+        public BoardGameAppService(IBoardGameService boardGameService, IMapper mapper)
         {
             _boardGameService = boardGameService;
+            _mapper = mapper;
         }
 
         public async Task AddBoardGame(AddBoardGameDTO addBoardGameDTO)
         {
-            var boardGameModel = MapAddBoardGameDtoToModel(addBoardGameDTO);
+            var boardGameModel = _mapper.MapAddBoardGameDtoToModel(addBoardGameDTO);
             await _boardGameService.AddBoardGame(boardGameModel);
         }
 
@@ -30,58 +31,20 @@ namespace BoardGameStore.Application.Services
         {
             var boardGameModels = await _boardGameService.GetAllBoardGames();
 
-            return boardGameModels.Select(MapBoardGameModelToReturnBoardGameShortDTO).ToList();
+            return boardGameModels.Select(_mapper.MapBoardGameModelToReturnBoardGameShortDTO).ToList();
         }
 
         public async Task<ReturnBoardGameDTO> GetBoardGameById(int id)
         {
             var boardGameModel = await _boardGameService.GetBoardGameById(id);
 
-            return MapBoardGameModelToReturnBoardGameDTO(boardGameModel);
+            return _mapper.MapBoardGameModelToReturnBoardGameDTO(boardGameModel);
         }
 
         public async Task UpdateBoardGame(int id, AddBoardGameDTO addBoardGameDTO)
         {
-            var boardGameModel = MapAddBoardGameDtoToModel(addBoardGameDTO);
+            var boardGameModel = _mapper.MapAddBoardGameDtoToModel(addBoardGameDTO);
             await _boardGameService.UpdateBoardGame(id, boardGameModel);
-        }
-
-        private static BoardGameModel MapAddBoardGameDtoToModel(AddBoardGameDTO addBoardGameDTO)
-        {
-            return new BoardGameModel
-            {
-                Name = addBoardGameDTO.Name,
-                Year = addBoardGameDTO.Year,
-                MinPlayers = addBoardGameDTO.MinPlayers,
-                MaxPlayers = addBoardGameDTO.MaxPlayers,
-                Difficulty = addBoardGameDTO.Difficulty,
-                AvailableQuantity = addBoardGameDTO.AvailableQuantity,
-                Price = addBoardGameDTO.Price
-            };
-        }
-
-        private static ReturnBoardGameDTO MapBoardGameModelToReturnBoardGameDTO(BoardGameModel boardGameModel)
-        {
-            return new ReturnBoardGameDTO
-            {
-                Id = boardGameModel.Id,
-                Name = boardGameModel.Name,
-                Year = boardGameModel.Year,
-                PlayersNumber = $"{boardGameModel.MinPlayers}-{boardGameModel.MaxPlayers}",
-                Difficulty = boardGameModel.Difficulty.ToString(),
-                IsAvailable = boardGameModel.AvailableQuantity > 0,
-                Price = boardGameModel.Price
-            };
-        }
-
-        private static ReturnBoardGameShortDTO MapBoardGameModelToReturnBoardGameShortDTO(BoardGameModel boardGameModel)
-        {
-            return new ReturnBoardGameShortDTO
-            {
-                Id = boardGameModel.Id,
-                Name = boardGameModel.Name,
-                Price = boardGameModel.Price
-            };
         }
     }
 }
