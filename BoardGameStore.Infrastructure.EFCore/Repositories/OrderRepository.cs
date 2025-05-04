@@ -26,21 +26,21 @@ namespace BoardGameStore.Infrastructure.EFCore.Repositories
 
         public async Task<List<OrderModel>> GetAllOrders()
         {
-            var orders = await _context.Orders.Include(o => o.Items).ToListAsync();
+            var orders = await _context.Orders.ToListAsync();
 
             return orders.Select(MapOrderEntityToModel).ToList();
         }
 
         public async Task<OrderModel> GetOrderById(int id)
         {
-            var order = await _context.Orders.Include(o => o.Items).ThenInclude(i => i.BoardGame).FirstOrDefaultAsync(o => o.Id == id); // Include(o => o.orderitems) ?
+            var order = await _context.Orders.Include(o => o.Items).ThenInclude(i => i.BoardGame).FirstOrDefaultAsync(o => o.Id == id);
 
             return MapOrderEntityToModel(order);
         }
 
         public async Task<List<OrderModel>> GetUserOrders(int userId)
         {
-            var userOrders = await _context.Orders.Include(o => o.Items).Where(o => o.UserId == userId).ToListAsync(); // include items
+            var userOrders = await _context.Orders.Where(o => o.UserId == userId).ToListAsync();
 
             return userOrders.Select(MapOrderEntityToModel).ToList();
         }
@@ -70,7 +70,7 @@ namespace BoardGameStore.Infrastructure.EFCore.Repositories
                 TotalPrice = order.TotalPrice,
                 Status = order.Status,
                 UserId = order.UserId,
-                Items = order.Items.Select(orderItem => new OrderItemModel
+                Items = order.Items?.Select(orderItem => new OrderItemModel
                 {
                     Id = orderItem.Id,
                     Quantity = orderItem.Quantity,

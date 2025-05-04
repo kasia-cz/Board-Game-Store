@@ -1,8 +1,8 @@
 ﻿using BoardGameStore.Domain.Enums;
 
-namespace BoardGameStore.Domain.Models
+namespace BoardGameStore.Infrastructure.Dapper.Entities
 {
-    public class OrderModel
+    public class Order
     {
         public int Id { get; set; }
 
@@ -10,11 +10,10 @@ namespace BoardGameStore.Domain.Models
 
         public decimal TotalPrice { get; set; }
 
-        public OrderStatus Status { get; set; }
+        public OrderStatus Status {  get; set; }
 
         public int UserId { get; set; }
 
-        public List<OrderItemModel>? Items { get; set; }
-
+        public List<OrderItem> Items { get; set; }
     }
 }

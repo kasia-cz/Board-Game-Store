@@ -3,7 +3,6 @@ using BoardGameStore.Domain.RepositoryInterfaces;
 using BoardGameStore.Infrastructure.Dapper.Entities;
 using Dapper;
 using System.Data;
-using System.Reflection;
 
 namespace BoardGameStore.Infrastructure.Dapper.Repositories
 {
