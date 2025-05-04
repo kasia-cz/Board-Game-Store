@@ -25,8 +25,11 @@ namespace BoardGameStore.Infrastructure.EFCore.Repositories
         public async Task DeleteBoardGame(int id)
         {
             var boardGame = await _context.BoardGames.FindAsync(id);
-            _context.BoardGames.Remove(boardGame);
-            await _context.SaveChangesAsync();
+            if (boardGame != null)
+            {
+                _context.BoardGames.Remove(boardGame);
+                await _context.SaveChangesAsync();
+            }
         }
 
         public async Task<List<BoardGameModel>> GetAllBoardGames()
