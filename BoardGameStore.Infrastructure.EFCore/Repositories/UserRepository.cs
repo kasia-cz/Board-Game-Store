@@ -1,5 +1,6 @@
 ﻿using BoardGameStore.Domain.Models;
 using BoardGameStore.Domain.RepositoryInterfaces;
+using BoardGameStore.Infrastructure.Shared.Mapping;
 using BoardGameStore.Infrastructure.Shared.Entities;
 using Microsoft.EntityFrameworkCore;
 
@@ -8,15 +9,17 @@ namespace BoardGameStore.Infrastructure.EFCore.Repositories
     public class UserRepository : IUserRepository
     {
         private readonly DbContextEFCore _context;
+        private readonly IMapper _mapper;
 
-        public UserRepository(DbContextEFCore context)
+        public UserRepository(DbContextEFCore context, IMapper mapper)
         {
             _context = context;
+            _mapper = mapper;
         }
 
         public async Task AddUser(UserModel userModel)
         {
-            var user = MapUserModelToEntity(userModel);
+            var user = _mapper.MapUserModelToEntity(userModel);
             _context.Users.Add(user);
             await _context.SaveChangesAsync();
         }
@@ -35,14 +38,14 @@ namespace BoardGameStore.Infrastructure.EFCore.Repositories
         {
             var users = await _context.Users.ToListAsync();
 
-            return users.Select(MapUserEntityToModel).ToList();
+            return users.Select(_mapper.MapUserEntityToModel).ToList();
         }
 
         public async Task<UserModel> GetUserById(int id)
         {
             var user = await _context.Users.Include(u => u.Address).FirstOrDefaultAsync(u => u.Id == id);
 
-            return MapUserEntityToModel(user);
+            return _mapper.MapUserEntityToModel(user);
         }
 
         public async Task UpdateUser(int id, UserModel userModel)
@@ -69,56 +72,6 @@ namespace BoardGameStore.Infrastructure.EFCore.Repositories
             }
 
             await _context.SaveChangesAsync();
-        }
-
-        private static User MapUserModelToEntity(UserModel userModel)
-        {
-            var user = new User
-            {
-                FirstName = userModel.FirstName,
-                LastName = userModel.LastName,
-                Email = userModel.Email,
-                PhoneNumber = userModel.PhoneNumber,
-                DateOfBirth = userModel.DateOfBirth,
-            };
-
-            if (userModel.Address != null)
-            {
-                user.Address = new Address
-                {
-                    City = userModel.Address.City,
-                    AddressLine = userModel.Address.AddressLine,
-                    PostalCode = userModel.Address.PostalCode,
-                };
-            }
-
-            return user;
-        }
-
-        private static UserModel MapUserEntityToModel(User user)
-        {
-            var userModel = new UserModel
-            {
-                Id = user.Id,
-                FirstName = user.FirstName,
-                LastName = user.LastName,
-                Email = user.Email,
-                PhoneNumber = user.PhoneNumber,
-                DateOfBirth = user.DateOfBirth,
-            };
-
-            if (user.Address != null)
-            {
-                userModel.Address = new AddressModel
-                {
-                    Id = user.Address.Id,
-                    City = user.Address.City,
-                    AddressLine = user.Address.AddressLine,
-                    PostalCode = user.Address.PostalCode,
-                };
-            }
-
-            return userModel;
         }
     }
 }

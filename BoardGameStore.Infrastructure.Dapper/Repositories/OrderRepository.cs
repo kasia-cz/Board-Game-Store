@@ -2,6 +2,7 @@
 using BoardGameStore.Domain.Models;
 using BoardGameStore.Domain.RepositoryInterfaces;
 using BoardGameStore.Infrastructure.Shared.Entities;
+using BoardGameStore.Infrastructure.Shared.Mapping;
 using Dapper;
 using System.Data;
 
@@ -10,15 +11,17 @@ namespace BoardGameStore.Infrastructure.Dapper.Repositories
     public class OrderRepository : IOrderRepository
     {
         private readonly IDbConnection _connection;
+        private readonly IMapper _mapper;
 
-        public OrderRepository(IDbConnection connection)
+        public OrderRepository(IDbConnection connection, IMapper mapper)
         {
             _connection = connection;
+            _mapper = mapper;
         }
 
         public async Task AddOrder(OrderModel orderModel)
         {
-            var order = MapOrderModelToEntity(orderModel);
+            var order = _mapper.MapOrderModelToEntity(orderModel);
             order.Date = DateTime.Now;
             order.Status = OrderStatus.Pending;
 
@@ -46,7 +49,7 @@ namespace BoardGameStore.Infrastructure.Dapper.Repositories
             const string sql = "SELECT * FROM Orders;";
             var orders = await _connection.QueryAsync<Order>(sql);
 
-            return orders.Select(MapOrderEntityToModel).ToList();
+            return orders.Select(_mapper.MapOrderEntityToModel).ToList();
         }
 
         public async Task<OrderModel> GetOrderById(int id)
@@ -77,7 +80,7 @@ namespace BoardGameStore.Infrastructure.Dapper.Repositories
                 splitOn: "Id,Id"
             );
 
-            return MapOrderEntityToModel(order);
+            return _mapper.MapOrderEntityToModel(order);
         }
 
         public async Task<List<OrderModel>> GetUserOrders(int userId)
@@ -85,49 +88,7 @@ namespace BoardGameStore.Infrastructure.Dapper.Repositories
             const string sql = "SELECT * FROM Orders WHERE UserId = @UserId;";
             var orders = await _connection.QueryAsync<Order>(sql, new { UserId = userId });
 
-            return orders.Select(MapOrderEntityToModel).ToList();
-        }
-
-        private static Order MapOrderModelToEntity(OrderModel orderModel)
-        {
-            var order = new Order
-            {
-                TotalPrice = orderModel.TotalPrice,
-                UserId = orderModel.UserId,
-                Items = orderModel.Items.Select(orderItem => new OrderItem
-                {
-                    BoardGameId = orderItem.BoardGameId,
-                    Quantity = orderItem.Quantity
-                }).ToList()
-            };
-
-            return order;
-        }
-
-        private static OrderModel MapOrderEntityToModel(Order order)
-        {
-            var orderModel = new OrderModel
-            {
-                Id = order.Id,
-                Date = order.Date,
-                TotalPrice = order.TotalPrice,
-                Status = order.Status,
-                UserId = order.UserId,
-                Items = order.Items?.Select(orderItem => new OrderItemModel
-                {
-                    Id = orderItem.Id,
-                    Quantity = orderItem.Quantity,
-                    BoardGameId = orderItem.BoardGameId,
-                    BoardGame = orderItem.BoardGame == null ? null : new BoardGameModel
-                    {
-                        Id = orderItem.BoardGame.Id,
-                        Name = orderItem.BoardGame.Name,
-                        Price = orderItem.BoardGame.Price
-                    }
-                }).ToList()
-            };
-
-            return orderModel;
+            return orders.Select(_mapper.MapOrderEntityToModel).ToList();
         }
     }
 }

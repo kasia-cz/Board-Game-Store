@@ -1,6 +1,7 @@
 ﻿using BoardGameStore.Domain.Models;
 using BoardGameStore.Domain.RepositoryInterfaces;
 using BoardGameStore.Infrastructure.Shared.Entities;
+using BoardGameStore.Infrastructure.Shared.Mapping;
 using Dapper;
 using System.Data;
 
@@ -9,15 +10,17 @@ namespace BoardGameStore.Infrastructure.Dapper.Repositories
     public class UserRepository : IUserRepository
     {
         private readonly IDbConnection _connection;
+        private readonly IMapper _mapper;
 
-        public UserRepository(IDbConnection connection)
+        public UserRepository(IDbConnection connection, IMapper mapper)
         {
             _connection = connection;
+            _mapper = mapper;
         }
 
         public async Task AddUser(UserModel userModel)
         {
-            var user = MapUserModelToEntity(userModel);
+            var user = _mapper.MapUserModelToEntity(userModel);
 
             const string userSql = @"
             INSERT INTO Users (FirstName, LastName, Email, PhoneNumber, DateOfBirth)
@@ -49,7 +52,7 @@ namespace BoardGameStore.Infrastructure.Dapper.Repositories
             const string sql = "SELECT * FROM Users;";
             var users = await _connection.QueryAsync<User>(sql);
 
-            return users.Select(MapUserEntityToModel).ToList();
+            return users.Select(_mapper.MapUserEntityToModel).ToList();
         }
 
         public async Task<UserModel> GetUserById(int id)
@@ -61,12 +64,12 @@ namespace BoardGameStore.Infrastructure.Dapper.Repositories
             var address = await _connection.QuerySingleOrDefaultAsync<Address>(addressSql, new { UserId = id });
             user.Address = address;
 
-            return MapUserEntityToModel(user);
+            return _mapper.MapUserEntityToModel(user);
         }
 
         public async Task UpdateUser(int id, UserModel userModel)
         {
-            var user = MapUserModelToEntity(userModel);
+            var user = _mapper.MapUserModelToEntity(userModel);
             user.Id = id;
 
             const string userSql = @"
@@ -109,56 +112,6 @@ namespace BoardGameStore.Infrastructure.Dapper.Repositories
                 const string sqlDelete = "DELETE FROM Addresses WHERE UserId = @UserId;";
                 await _connection.ExecuteAsync(sqlDelete, new { UserId = id });
             }
-        }
-
-        private static User MapUserModelToEntity(UserModel userModel)
-        {
-            var user = new User
-            {
-                FirstName = userModel.FirstName,
-                LastName = userModel.LastName,
-                Email = userModel.Email,
-                PhoneNumber = userModel.PhoneNumber,
-                DateOfBirth = userModel.DateOfBirth,
-            };
-
-            if (userModel.Address != null)
-            {
-                user.Address = new Address
-                {
-                    City = userModel.Address.City,
-                    AddressLine = userModel.Address.AddressLine,
-                    PostalCode = userModel.Address.PostalCode,
-                };
-            }
-
-            return user;
-        }
-
-        private static UserModel MapUserEntityToModel(User user)
-        {
-            var userModel = new UserModel
-            {
-                Id = user.Id,
-                FirstName = user.FirstName,
-                LastName = user.LastName,
-                Email = user.Email,
-                PhoneNumber = user.PhoneNumber,
-                DateOfBirth = user.DateOfBirth,
-            };
-
-            if (user.Address != null)
-            {
-                userModel.Address = new AddressModel
-                {
-                    Id = user.Address.Id,
-                    City = user.Address.City,
-                    AddressLine = user.Address.AddressLine,
-                    PostalCode = user.Address.PostalCode,
-                };
-            }
-
-            return userModel;
         }
     }
 }

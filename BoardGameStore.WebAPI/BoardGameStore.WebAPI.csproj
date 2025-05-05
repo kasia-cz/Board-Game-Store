@@ -19,6 +19,7 @@
     <ProjectReference Include="..\BoardGameStore.Application\BoardGameStore.Application.csproj" />
     <ProjectReference Include="..\BoardGameStore.Infrastructure.Dapper\BoardGameStore.Infrastructure.Dapper.csproj" />
     <ProjectReference Include="..\BoardGameStore.Infrastructure.EFCore\BoardGameStore.Infrastructure.EFCore.csproj" />
+    <ProjectReference Include="..\BoardGameStore.Infrastructure.Shared\BoardGameStore.Infrastructure.Shared.csproj" />
   </ItemGroup>
 
 </Project>

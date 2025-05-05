@@ -2,6 +2,7 @@ using BoardGameStore.Application;
 using BoardGameStore.Domain;
 using BoardGameStore.Infrastructure.Dapper;
 using BoardGameStore.Infrastructure.EFCore;
+using BoardGameStore.Infrastructure.Shared;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using System.Data;
@@ -28,6 +29,7 @@ namespace BoardGameStore.WebAPI
             builder.Services.AddEFCoreRepositories();*/
 
             // Services unrelated to ORM
+            builder.Services.AddInfrastructureServices();
             builder.Services.AddDomainServices();
             builder.Services.AddApplicationServices();
             builder.Services.AddControllers();

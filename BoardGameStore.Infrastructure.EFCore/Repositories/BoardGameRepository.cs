@@ -1,6 +1,6 @@
 ﻿using BoardGameStore.Domain.Models;
 using BoardGameStore.Domain.RepositoryInterfaces;
-using BoardGameStore.Infrastructure.Shared.Entities;
+using BoardGameStore.Infrastructure.Shared.Mapping;
 using Microsoft.EntityFrameworkCore;
 
 namespace BoardGameStore.Infrastructure.EFCore.Repositories
@@ -8,16 +8,17 @@ namespace BoardGameStore.Infrastructure.EFCore.Repositories
     public class BoardGameRepository : IBoardGameRepository
     {
         private readonly DbContextEFCore _context;
-        // todo: add mappers
+        private readonly IMapper _mapper;
 
-        public BoardGameRepository(DbContextEFCore context)
+        public BoardGameRepository(DbContextEFCore context, IMapper mapper)
         {
             _context = context;
+            _mapper = mapper;
         }
 
         public async Task AddBoardGame(BoardGameModel boardGameModel)
         {
-            var boardGame = MapBoardGameModelToEntity(boardGameModel);
+            var boardGame = _mapper.MapBoardGameModelToEntity(boardGameModel);
             _context.BoardGames.Add(boardGame);
             await _context.SaveChangesAsync();
         }
@@ -36,14 +37,14 @@ namespace BoardGameStore.Infrastructure.EFCore.Repositories
         {
             var boardGames = await _context.BoardGames.ToListAsync();
 
-            return boardGames.Select(MapBoardGameEntityToModel).ToList();
+            return boardGames.Select(_mapper.MapBoardGameEntityToModel).ToList();
         }
 
         public async Task<BoardGameModel> GetBoardGameById(int id)
         {
             var boardGame = await _context.BoardGames.FindAsync(id);
 
-            return MapBoardGameEntityToModel(boardGame);
+            return _mapper.MapBoardGameEntityToModel(boardGame);
         }
 
         public async Task UpdateBoardGame(int id, BoardGameModel boardGameModel)
@@ -59,35 +60,6 @@ namespace BoardGameStore.Infrastructure.EFCore.Repositories
             boardGameToUpdate.Price = boardGameModel.Price;
 
             await _context.SaveChangesAsync();
-        }
-
-        private static BoardGame MapBoardGameModelToEntity(BoardGameModel boardGameModel)
-        {
-            return new BoardGame
-            {
-                Name = boardGameModel.Name,
-                Year = boardGameModel.Year,
-                MinPlayers = boardGameModel.MinPlayers,
-                MaxPlayers = boardGameModel.MaxPlayers,
-                Difficulty = boardGameModel.Difficulty,
-                AvailableQuantity = boardGameModel.AvailableQuantity,
-                Price = boardGameModel.Price
-            };
-        }
-
-        private static BoardGameModel MapBoardGameEntityToModel(BoardGame boardGame)
-        {
-            return new BoardGameModel
-            {
-                Id = boardGame.Id,
-                Name = boardGame.Name,
-                Year = boardGame.Year,
-                MinPlayers = boardGame.MinPlayers,
-                MaxPlayers = boardGame.MaxPlayers,
-                Difficulty = boardGame.Difficulty,
-                AvailableQuantity = boardGame.AvailableQuantity,
-                Price = boardGame.Price
-            };
         }
     }
 }

@@ -1,7 +1,7 @@
 ﻿using BoardGameStore.Domain.Enums;
 using BoardGameStore.Domain.Models;
 using BoardGameStore.Domain.RepositoryInterfaces;
-using BoardGameStore.Infrastructure.Shared.Entities;
+using BoardGameStore.Infrastructure.Shared.Mapping;
 using Microsoft.EntityFrameworkCore;
 
 namespace BoardGameStore.Infrastructure.EFCore.Repositories
@@ -9,15 +9,17 @@ namespace BoardGameStore.Infrastructure.EFCore.Repositories
     public class OrderRepository : IOrderRepository
     {
         private readonly DbContextEFCore _context;
+        private readonly IMapper _mapper;
 
-        public OrderRepository(DbContextEFCore context)
+        public OrderRepository(DbContextEFCore context, IMapper mapper)
         {
             _context = context;
+            _mapper = mapper;
         }
 
         public async Task AddOrder(OrderModel orderModel)
         {
-            var order = MapOrderModelToEntity(orderModel);
+            var order = _mapper.MapOrderModelToEntity(orderModel);
             order.Date = DateTime.Now;
             order.Status = OrderStatus.Pending;
             _context.Add(order);
@@ -28,63 +30,21 @@ namespace BoardGameStore.Infrastructure.EFCore.Repositories
         {
             var orders = await _context.Orders.ToListAsync();
 
-            return orders.Select(MapOrderEntityToModel).ToList();
+            return orders.Select(_mapper.MapOrderEntityToModel).ToList();
         }
 
         public async Task<OrderModel> GetOrderById(int id)
         {
             var order = await _context.Orders.Include(o => o.Items).ThenInclude(i => i.BoardGame).FirstOrDefaultAsync(o => o.Id == id);
 
-            return MapOrderEntityToModel(order);
+            return _mapper.MapOrderEntityToModel(order);
         }
 
         public async Task<List<OrderModel>> GetUserOrders(int userId)
         {
             var userOrders = await _context.Orders.Where(o => o.UserId == userId).ToListAsync();
 
-            return userOrders.Select(MapOrderEntityToModel).ToList();
-        }
-
-        private static Order MapOrderModelToEntity(OrderModel orderModel)
-        {
-            var order = new Order
-            {
-                TotalPrice = orderModel.TotalPrice,
-                UserId = orderModel.UserId,
-                Items = orderModel.Items.Select(orderItem => new OrderItem
-                {
-                    BoardGameId = orderItem.BoardGameId,
-                    Quantity = orderItem.Quantity
-                }).ToList()
-            };
-
-            return order;
-        }
-
-        private static OrderModel MapOrderEntityToModel(Order order)
-        {
-            var orderModel = new OrderModel
-            {
-                Id = order.Id,
-                Date = order.Date,
-                TotalPrice = order.TotalPrice,
-                Status = order.Status,
-                UserId = order.UserId,
-                Items = order.Items?.Select(orderItem => new OrderItemModel
-                {
-                    Id = orderItem.Id,
-                    Quantity = orderItem.Quantity,
-                    BoardGameId = orderItem.BoardGameId,
-                    BoardGame = orderItem.BoardGame == null ? null : new BoardGameModel
-                    {
-                        Id = orderItem.BoardGame.Id,
-                        Name = orderItem.BoardGame.Name,
-                        Price = orderItem.BoardGame.Price
-                    }
-                }).ToList()
-            };
-
-            return orderModel;
+            return userOrders.Select(_mapper.MapOrderEntityToModel).ToList();
         }
     }
 }

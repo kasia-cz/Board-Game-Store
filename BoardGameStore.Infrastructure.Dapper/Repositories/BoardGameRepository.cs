@@ -1,6 +1,7 @@
 ﻿using BoardGameStore.Domain.Models;
 using BoardGameStore.Domain.RepositoryInterfaces;
 using BoardGameStore.Infrastructure.Shared.Entities;
+using BoardGameStore.Infrastructure.Shared.Mapping;
 using Dapper;
 using System.Data;
 
@@ -9,15 +10,17 @@ namespace BoardGameStore.Infrastructure.Dapper.Repositories
     public class BoardGameRepository : IBoardGameRepository
     {
         private readonly IDbConnection _connection;
+        private readonly IMapper _mapper;
 
-        public BoardGameRepository(IDbConnection connection)
+        public BoardGameRepository(IDbConnection connection, IMapper mapper)
         {
             _connection = connection;
+            _mapper = mapper;
         }
 
         public async Task AddBoardGame(BoardGameModel model)
         {
-            var boardGame = MapBoardGameModelToEntity(model);
+            var boardGame = _mapper.MapBoardGameModelToEntity(model);
 
             const string sql = @"
             INSERT INTO BoardGames (Name, Year, MinPlayers, MaxPlayers, Difficulty, AvailableQuantity, Price)
@@ -37,7 +40,7 @@ namespace BoardGameStore.Infrastructure.Dapper.Repositories
             const string sql = "SELECT * FROM BoardGames;";
             var boardGames = await _connection.QueryAsync<BoardGame>(sql);
 
-            return boardGames.Select(MapBoardGameEntityToModel).ToList();
+            return boardGames.Select(_mapper.MapBoardGameEntityToModel).ToList();
         }
 
         public async Task<BoardGameModel> GetBoardGameById(int id)
@@ -45,12 +48,12 @@ namespace BoardGameStore.Infrastructure.Dapper.Repositories
             const string sql = "SELECT * FROM BoardGames WHERE Id = @Id;";
             var boardGame = await _connection.QuerySingleOrDefaultAsync<BoardGame>(sql, new { Id = id });
 
-            return MapBoardGameEntityToModel(boardGame);
+            return _mapper.MapBoardGameEntityToModel(boardGame);
         }
 
         public async Task UpdateBoardGame(int id, BoardGameModel model)
         {
-            var boardGame = MapBoardGameModelToEntity(model);
+            var boardGame = _mapper.MapBoardGameModelToEntity(model);
             boardGame.Id = id;
 
             const string sql = @"
@@ -65,35 +68,6 @@ namespace BoardGameStore.Infrastructure.Dapper.Repositories
             WHERE Id = @Id;";
 
             await _connection.ExecuteAsync(sql, boardGame);
-        }
-
-        private static BoardGame MapBoardGameModelToEntity(BoardGameModel boardGameModel)
-        {
-            return new BoardGame
-            {
-                Name = boardGameModel.Name,
-                Year = boardGameModel.Year,
-                MinPlayers = boardGameModel.MinPlayers,
-                MaxPlayers = boardGameModel.MaxPlayers,
-                Difficulty = boardGameModel.Difficulty,
-                AvailableQuantity = boardGameModel.AvailableQuantity,
-                Price = boardGameModel.Price
-            };
-        }
-
-        private static BoardGameModel MapBoardGameEntityToModel(BoardGame boardGame)
-        {
-            return new BoardGameModel
-            {
-                Id = boardGame.Id,
-                Name = boardGame.Name,
-                Year = boardGame.Year,
-                MinPlayers = boardGame.MinPlayers,
-                MaxPlayers = boardGame.MaxPlayers,
-                Difficulty = boardGame.Difficulty,
-                AvailableQuantity = boardGame.AvailableQuantity,
-                Price = boardGame.Price
-            };
         }
     }
 }
