@@ -1,7 +1,7 @@
 ﻿using BoardGameStore.Domain.Models;
 using BoardGameStore.Infrastructure.Shared.Entities;
 
-namespace BoardGameStore.Infrastructure.Shared.Mapping
+namespace BoardGameStore.Infrastructure.Shared.Mapping.Mapperly
 {
     public class MapperlyMapper : IMapper
     {
