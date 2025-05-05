@@ -70,7 +70,7 @@ namespace BoardGameStore.Application.Mapping
                 Id = orderModel.Id,
                 Date = orderModel.Date,
                 TotalPrice = orderModel.TotalPrice,
-                Status = orderModel.Status,
+                Status = orderModel.Status.ToString(),
                 UserId = orderModel.UserId,
                 Items = orderModel.Items.Select(orderItem => new ReturnOrderItemDTO
                 {
@@ -95,7 +95,7 @@ namespace BoardGameStore.Application.Mapping
                 Id = orderModel.Id,
                 Date = orderModel.Date,
                 TotalPrice = orderModel.TotalPrice,
-                Status = orderModel.Status,
+                Status = orderModel.Status.ToString(),
                 UserId = orderModel.UserId
             };
         }

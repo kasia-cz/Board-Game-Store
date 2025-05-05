@@ -25,9 +25,11 @@ namespace BoardGameStore.Application.Mapping.AutoMapper
 
             CreateMap<AddOrderItemDTO, OrderItemModel>();
 
-            CreateMap<OrderModel, ReturnOrderDTO>();
+            CreateMap<OrderModel, ReturnOrderDTO>()
+                .ForMember(dest => dest.Status, opt => opt.MapFrom(src => src.Status.ToString()));
 
-            CreateMap<OrderModel, ReturnOrderShortDTO>();
+            CreateMap<OrderModel, ReturnOrderShortDTO>()
+                .ForMember(dest => dest.Status, opt => opt.MapFrom(src => src.Status.ToString()));
 
             CreateMap<OrderItemModel, ReturnOrderItemDTO>();
 

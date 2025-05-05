@@ -1,6 +1,4 @@
-﻿using BoardGameStore.Domain.Enums;
-
-namespace BoardGameStore.Application.DTOs.OrderDTOs
+﻿namespace BoardGameStore.Application.DTOs.OrderDTOs
 {
     public class ReturnOrderDTO
     {
@@ -10,7 +8,7 @@ namespace BoardGameStore.Application.DTOs.OrderDTOs
 
         public decimal TotalPrice { get; set; }
 
-        public OrderStatus Status { get; set; }
+        public string Status { get; set; }
 
         public int UserId { get; set; }
 
