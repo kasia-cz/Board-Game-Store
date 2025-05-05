@@ -3,9 +3,9 @@ using BoardGameStore.Application.DTOs.OrderDTOs;
 using BoardGameStore.Application.DTOs.UserDTOs;
 using BoardGameStore.Domain.Models;
 
-namespace BoardGameStore.Application.Mapping
+namespace BoardGameStore.Application.Mapping.Mapperly
 {
-    public class AutoMapper : IMapper
+    public class MapperlyMapper : IMapper
     {
         // map board game
         public BoardGameModel MapAddBoardGameDtoToModel(AddBoardGameDTO addBoardGameDTO)

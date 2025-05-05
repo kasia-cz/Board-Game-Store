@@ -1,58 +1,66 @@
-﻿using BoardGameStore.Application.DTOs.BoardGameDTOs;
+﻿using IAutoMapper = AutoMapper.IMapper;
+using BoardGameStore.Application.DTOs.BoardGameDTOs;
 using BoardGameStore.Application.DTOs.OrderDTOs;
 using BoardGameStore.Application.DTOs.UserDTOs;
 using BoardGameStore.Domain.Models;
 
-namespace BoardGameStore.Application.Mapping
+namespace BoardGameStore.Application.Mapping.AutoMapper
 {
-    public class MapperlyMapper : IMapper
+    public class AutoMapperMapper : IMapper
     {
+        private readonly IAutoMapper _autoMapper;
+
+        public AutoMapperMapper(IAutoMapper autoMapper)
+        {
+            _autoMapper = autoMapper;
+        }
+
         // map board game
         public BoardGameModel MapAddBoardGameDtoToModel(AddBoardGameDTO addBoardGameDTO)
         {
-            throw new NotImplementedException();
+            return _autoMapper.Map<BoardGameModel>(addBoardGameDTO);
         }
 
         public ReturnBoardGameDTO MapBoardGameModelToReturnBoardGameDTO(BoardGameModel boardGameModel)
         {
-            throw new NotImplementedException();
+            return _autoMapper.Map<ReturnBoardGameDTO>(boardGameModel);
         }
 
         public ReturnBoardGameShortDTO MapBoardGameModelToReturnBoardGameShortDTO(BoardGameModel boardGameModel)
         {
-            throw new NotImplementedException();
+            return _autoMapper.Map<ReturnBoardGameShortDTO>(boardGameModel);
         }
 
         // map order
         public OrderModel MapAddOrderDtoToModel(AddOrderDTO addOrderDTO)
         {
-            throw new NotImplementedException();
+            return _autoMapper.Map<OrderModel>(addOrderDTO);
         }
 
         public ReturnOrderDTO MapOrderModelToReturnOrderDTO(OrderModel orderModel)
         {
-            throw new NotImplementedException();
+            return _autoMapper.Map<ReturnOrderDTO>(orderModel);
         }
 
         public ReturnOrderShortDTO MapOrderModelToReturnOrderShortDTO(OrderModel orderModel)
         {
-            throw new NotImplementedException();
+            return _autoMapper.Map<ReturnOrderShortDTO>(orderModel);
         }
 
         // map user
         public UserModel MapAddUserDtoToModel(AddUserDTO addUserDTO)
         {
-            throw new NotImplementedException();
+            return _autoMapper.Map<UserModel>(addUserDTO);
         }
 
         public ReturnUserDTO MapUserModelToReturnUserDTO(UserModel userModel)
         {
-            throw new NotImplementedException();
+            return _autoMapper.Map<ReturnUserDTO>(userModel);
         }
 
         public ReturnUserShortDTO MapUserModelToReturnUserShortDTO(UserModel userModel)
         {
-            throw new NotImplementedException();
+            return _autoMapper.Map<ReturnUserShortDTO>(userModel);
         }
     }
 }

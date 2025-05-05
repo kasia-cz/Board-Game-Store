@@ -8,15 +8,15 @@ namespace BoardGameStore.Infrastructure.Shared.Mapping.AutoMapper
     {
         public MappingProfile() 
         {
-            CreateMap<BoardGame, BoardGameModel>().ReverseMap();
-
             CreateMap<Address, AddressModel>().ReverseMap();
 
-            CreateMap<User, UserModel>().ReverseMap();
+            CreateMap<BoardGame, BoardGameModel>().ReverseMap();
+
+            CreateMap<Order, OrderModel>().ReverseMap();
 
             CreateMap<OrderItem, OrderItemModel>().ReverseMap();
 
-            CreateMap<Order, OrderModel>().ReverseMap();
+            CreateMap<User, UserModel>().ReverseMap();
         }
     }
 }
