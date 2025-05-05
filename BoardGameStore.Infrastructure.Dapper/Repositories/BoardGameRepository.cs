@@ -1,6 +1,6 @@
 ﻿using BoardGameStore.Domain.Models;
 using BoardGameStore.Domain.RepositoryInterfaces;
-using BoardGameStore.Infrastructure.Dapper.Entities;
+using BoardGameStore.Infrastructure.Shared.Entities;
 using Dapper;
 using System.Data;
 

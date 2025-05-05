@@ -1,4 +1,4 @@
-﻿namespace BoardGameStore.Infrastructure.EFCore.Entities
+﻿namespace BoardGameStore.Infrastructure.Shared.Entities
 {
     public class User
     {

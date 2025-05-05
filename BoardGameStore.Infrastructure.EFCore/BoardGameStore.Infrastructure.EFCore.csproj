@@ -17,6 +17,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\BoardGameStore.Domain\BoardGameStore.Domain.csproj" />
+    <ProjectReference Include="..\BoardGameStore.Infrastructure.Shared\BoardGameStore.Infrastructure.Shared.csproj" />
   </ItemGroup>
 
 </Project>

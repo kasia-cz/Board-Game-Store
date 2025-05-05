@@ -1,6 +1,6 @@
 ﻿using BoardGameStore.Domain.Models;
 using BoardGameStore.Domain.RepositoryInterfaces;
-using BoardGameStore.Infrastructure.EFCore.Entities;
+using BoardGameStore.Infrastructure.Shared.Entities;
 using Microsoft.EntityFrameworkCore;
 
 namespace BoardGameStore.Infrastructure.EFCore.Repositories

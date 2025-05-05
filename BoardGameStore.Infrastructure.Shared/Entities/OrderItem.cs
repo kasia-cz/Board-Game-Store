@@ -1,4 +1,4 @@
-﻿namespace BoardGameStore.Infrastructure.Dapper.Entities
+﻿namespace BoardGameStore.Infrastructure.Shared.Entities
 {
     public class OrderItem
     {

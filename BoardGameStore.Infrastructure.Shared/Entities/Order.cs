@@ -1,6 +1,6 @@
 ﻿using BoardGameStore.Domain.Enums;
 
-namespace BoardGameStore.Infrastructure.EFCore.Entities
+namespace BoardGameStore.Infrastructure.Shared.Entities
 {
     public class Order
     {
