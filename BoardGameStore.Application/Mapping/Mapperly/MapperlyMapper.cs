@@ -2,57 +2,42 @@
 using BoardGameStore.Application.DTOs.OrderDTOs;
 using BoardGameStore.Application.DTOs.UserDTOs;
 using BoardGameStore.Domain.Models;
+using Riok.Mapperly.Abstractions;
 
 namespace BoardGameStore.Application.Mapping.Mapperly
 {
-    public class MapperlyMapper : IMapper
+    [Mapper]
+    public partial class MapperlyMapper : IMapper
     {
         // map board game
-        public BoardGameModel MapAddBoardGameDtoToModel(AddBoardGameDTO addBoardGameDTO)
-        {
-            throw new NotImplementedException();
-        }
+        public partial BoardGameModel MapAddBoardGameDtoToModel(AddBoardGameDTO addBoardGameDTO);
 
-        public ReturnBoardGameDTO MapBoardGameModelToReturnBoardGameDTO(BoardGameModel boardGameModel)
-        {
-            throw new NotImplementedException();
-        }
+        [MapPropertyFromSource(nameof(ReturnBoardGameDTO.PlayersNumber), Use = nameof(MapPlayersNumber))]
+        [MapProperty(nameof(BoardGameModel.AvailableQuantity), nameof(ReturnBoardGameDTO.IsAvailable), Use = nameof(MapAvailability))]
+        public partial ReturnBoardGameDTO MapBoardGameModelToReturnBoardGameDTO(BoardGameModel boardGameModel);
 
-        public ReturnBoardGameShortDTO MapBoardGameModelToReturnBoardGameShortDTO(BoardGameModel boardGameModel)
-        {
-            throw new NotImplementedException();
-        }
+        public partial ReturnBoardGameShortDTO MapBoardGameModelToReturnBoardGameShortDTO(BoardGameModel boardGameModel);
+
+        private string MapPlayersNumber(BoardGameModel boardGameModel) => $"{boardGameModel.MinPlayers}-{boardGameModel.MaxPlayers}";
+
+        [UserMapping(Default = false)]
+        private bool MapAvailability(int availableQuantity) => availableQuantity > 0;
 
         // map order
-        public OrderModel MapAddOrderDtoToModel(AddOrderDTO addOrderDTO)
-        {
-            throw new NotImplementedException();
-        }
+        public partial OrderModel MapAddOrderDtoToModel(AddOrderDTO addOrderDTO);
 
-        public ReturnOrderDTO MapOrderModelToReturnOrderDTO(OrderModel orderModel)
-        {
-            throw new NotImplementedException();
-        }
+        public partial ReturnOrderDTO MapOrderModelToReturnOrderDTO(OrderModel orderModel);
 
-        public ReturnOrderShortDTO MapOrderModelToReturnOrderShortDTO(OrderModel orderModel)
-        {
-            throw new NotImplementedException();
-        }
+        public partial ReturnOrderShortDTO MapOrderModelToReturnOrderShortDTO(OrderModel orderModel);
 
         // map user
-        public UserModel MapAddUserDtoToModel(AddUserDTO addUserDTO)
-        {
-            throw new NotImplementedException();
-        }
+        public partial UserModel MapAddUserDtoToModel(AddUserDTO addUserDTO);
 
-        public ReturnUserDTO MapUserModelToReturnUserDTO(UserModel userModel)
-        {
-            throw new NotImplementedException();
-        }
+        public partial ReturnUserDTO MapUserModelToReturnUserDTO(UserModel userModel);
 
-        public ReturnUserShortDTO MapUserModelToReturnUserShortDTO(UserModel userModel)
-        {
-            throw new NotImplementedException();
-        }
+        [MapPropertyFromSource(nameof(ReturnUserShortDTO.Name), Use = nameof(MapUserName))]
+        public partial ReturnUserShortDTO MapUserModelToReturnUserShortDTO(UserModel userModel);
+
+        private string MapUserName(UserModel userModel) => $"{userModel.FirstName} {userModel.LastName}";
     }
 }

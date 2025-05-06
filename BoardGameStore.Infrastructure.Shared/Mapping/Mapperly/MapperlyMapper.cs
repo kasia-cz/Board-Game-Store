@@ -13,11 +13,11 @@ namespace BoardGameStore.Infrastructure.Shared.Mapping.Mapperly
         public partial BoardGame MapBoardGameModelToEntity(BoardGameModel boardGameModel);
 
         // map order
-        public partial List<OrderItemModel>? MapOrderItems(List<OrderItem>? items);
-
         public partial OrderModel MapOrderEntityToModel(Order order);
 
         public partial Order MapOrderModelToEntity(OrderModel orderModel);
+
+        private partial List<OrderItemModel>? MapOrderItems(List<OrderItem>? items);
 
         // map user
         public partial UserModel MapUserEntityToModel(User user);

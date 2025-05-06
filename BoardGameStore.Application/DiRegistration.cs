@@ -15,9 +15,9 @@ namespace BoardGameStore.Application
             collection.AddScoped<IUserAppService, UserAppService>();
             collection.AddScoped<IOrderAppService, OrderAppService>();
             //collection.AddScoped<IMapper, ManualMapper>();
-            collection.AddScoped<IMapper, AutoMapperMapper>();
-            collection.AddAutoMapper(typeof(MappingProfile));
-            //collection.AddScoped<IMapper, MapperlyMapper>();
+            //collection.AddScoped<IMapper, AutoMapperMapper>();
+            //collection.AddAutoMapper(typeof(MappingProfile));
+            collection.AddScoped<IMapper, MapperlyMapper>();
             return collection;
         }
     }
