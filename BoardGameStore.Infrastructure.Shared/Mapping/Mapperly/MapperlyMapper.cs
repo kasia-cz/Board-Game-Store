@@ -1,41 +1,27 @@
 ﻿using BoardGameStore.Domain.Models;
 using BoardGameStore.Infrastructure.Shared.Entities;
+using Riok.Mapperly.Abstractions;
 
 namespace BoardGameStore.Infrastructure.Shared.Mapping.Mapperly
 {
-    public class MapperlyMapper : IMapper
+    [Mapper]
+    public partial class MapperlyMapper : IMapper
     {
         // map board game
-        public BoardGameModel MapBoardGameEntityToModel(BoardGame boardGame)
-        {
-            throw new NotImplementedException();
-        }
+        public partial BoardGameModel MapBoardGameEntityToModel(BoardGame boardGame);
 
-        public BoardGame MapBoardGameModelToEntity(BoardGameModel boardGameModel)
-        {
-            throw new NotImplementedException();
-        }
+        public partial BoardGame MapBoardGameModelToEntity(BoardGameModel boardGameModel);
 
         // map order
-        public OrderModel MapOrderEntityToModel(Order order)
-        {
-            throw new NotImplementedException();
-        }
+        public partial List<OrderItemModel>? MapOrderItems(List<OrderItem>? items);
 
-        public Order MapOrderModelToEntity(OrderModel orderModel)
-        {
-            throw new NotImplementedException();
-        }
+        public partial OrderModel MapOrderEntityToModel(Order order);
+
+        public partial Order MapOrderModelToEntity(OrderModel orderModel);
 
         // map user
-        public UserModel MapUserEntityToModel(User user)
-        {
-            throw new NotImplementedException();
-        }
+        public partial UserModel MapUserEntityToModel(User user);
 
-        public User MapUserModelToEntity(UserModel userModel)
-        {
-            throw new NotImplementedException();
-        }
+        public partial User MapUserModelToEntity(UserModel userModel);
     }
 }

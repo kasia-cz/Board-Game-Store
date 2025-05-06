@@ -15,6 +15,5 @@ namespace BoardGameStore.Domain.Models
         public int UserId { get; set; }
 
         public List<OrderItemModel>? Items { get; set; }
-
     }
 }
