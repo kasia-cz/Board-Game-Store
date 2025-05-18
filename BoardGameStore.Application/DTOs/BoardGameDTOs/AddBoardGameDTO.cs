@@ -20,7 +20,6 @@ namespace BoardGameStore.Application.DTOs.BoardGameDTOs
         [MaxPlayersGreaterThanMin(nameof(MinPlayers))]
         public int MaxPlayers { get; set; }
 
-        [Required]
         [EnumDataType(typeof(GameDifficulty))]
         public GameDifficulty Difficulty { get; set; }
 
