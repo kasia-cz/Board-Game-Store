@@ -1,5 +1,6 @@
 ﻿using BoardGameStore.Application.DTOs.OrderDTOs;
 using BoardGameStore.Application.Interfaces;
+using BoardGameStore.Application.Validation;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BoardGameStore.WebAPI.Controllers
@@ -9,15 +10,19 @@ namespace BoardGameStore.WebAPI.Controllers
     public class OrderController : ControllerBase
     {
         private readonly IOrderAppService _orderAppService;
+        private readonly IValidationService<AddOrderDTO> _validationService;
 
-        public OrderController(IOrderAppService orderAppService)
+        public OrderController(IOrderAppService orderAppService, IValidationService<AddOrderDTO> validationService)
         {
             _orderAppService = orderAppService;
+            _validationService = validationService;
         }
 
         [HttpPost]
         public async Task<ActionResult> AddOrder(AddOrderDTO addOrderDTO)
         {
+            _validationService.ValidateAndThrow(addOrderDTO);
+
             await _orderAppService.AddOrder(addOrderDTO);
             return NoContent();
         }

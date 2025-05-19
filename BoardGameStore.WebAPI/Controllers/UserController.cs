@@ -1,5 +1,6 @@
 ﻿using BoardGameStore.Application.DTOs.UserDTOs;
 using BoardGameStore.Application.Interfaces;
+using BoardGameStore.Application.Validation;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BoardGameStore.WebAPI.Controllers
@@ -9,15 +10,19 @@ namespace BoardGameStore.WebAPI.Controllers
     public class UserController : ControllerBase
     {
         private readonly IUserAppService _userAppService;
+        private readonly IValidationService<AddUserDTO> _validationService;
 
-        public UserController(IUserAppService userAppService)
+        public UserController(IUserAppService userAppService, IValidationService<AddUserDTO> validationService)
         {
             _userAppService = userAppService;
+            _validationService = validationService;
         }
         
         [HttpPost]
         public async Task<ActionResult> AddUser(AddUserDTO addUserDTO)
         {
+            _validationService.ValidateAndThrow(addUserDTO);
+
             await _userAppService.AddUser(addUserDTO);
             return NoContent();
         }
