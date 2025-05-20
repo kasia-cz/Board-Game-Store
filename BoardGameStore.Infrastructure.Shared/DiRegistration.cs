@@ -9,10 +9,28 @@ namespace BoardGameStore.Infrastructure.Shared
     {
         public static IServiceCollection AddInfrastructureServices(this IServiceCollection collection)
         {
-            //collection.AddScoped<IMapper, ManualMapper>();
-            //collection.AddScoped<IMapper, AutoMapperMapper>();
-            //collection.AddAutoMapper(typeof(MappingProfile));
-            collection.AddScoped<IMapper, MapperlyMapper>();
+            //collection.AddManualMapping();
+            //collection.AddMapperly();
+            collection.AddAutoMapper();
+
+            return collection;
+        }
+
+        private static IServiceCollection AddManualMapping(this IServiceCollection collection)
+        {
+            return collection.AddScoped<IMapper, ManualMapper>();
+        }
+
+        private static IServiceCollection AddMapperly(this IServiceCollection collection)
+        {
+            return collection.AddScoped<IMapper, MapperlyMapper>();
+        }
+
+        private static IServiceCollection AddAutoMapper(this IServiceCollection collection)
+        {
+            collection.AddScoped<IMapper, AutoMapperMapper>();
+            collection.AddAutoMapper(typeof(MappingProfile));
+
             return collection;
         }
     }

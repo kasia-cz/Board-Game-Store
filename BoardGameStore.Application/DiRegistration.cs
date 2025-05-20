@@ -24,14 +24,31 @@ namespace BoardGameStore.Application
             collection.AddScoped<IOrderAppService, OrderAppService>();
 
             // MAPPING
-            //collection.AddScoped<IMapper, ManualMapper>();
-            //collection.AddScoped<IMapper, AutoMapperMapper>();
-            //collection.AddAutoMapper(Assembly.GetExecutingAssembly());
-            collection.AddScoped<IMapper, MapperlyMapper>();
+            //collection.AddManualMapping();
+            //collection.AddMapperly();
+            collection.AddAutoMapper();
 
             // VALIDATION
             //collection.AddDataAnnotations();
             collection.AddFluentValidation();
+
+            return collection;
+        }
+
+        private static IServiceCollection AddManualMapping(this IServiceCollection collection)
+        {
+            return collection.AddScoped<IMapper, ManualMapper>();
+        }
+
+        private static IServiceCollection AddMapperly(this IServiceCollection collection)
+        {
+            return collection.AddScoped<IMapper, MapperlyMapper>(); ;
+        }
+
+        private static IServiceCollection AddAutoMapper(this IServiceCollection collection)
+        {
+            collection.AddScoped<IMapper, AutoMapperMapper>();
+            collection.AddAutoMapper(Assembly.GetExecutingAssembly());
 
             return collection;
         }
