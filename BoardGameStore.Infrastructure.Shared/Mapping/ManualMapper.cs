@@ -89,18 +89,14 @@ namespace BoardGameStore.Infrastructure.Shared.Mapping
                 Email = user.Email,
                 PhoneNumber = user.PhoneNumber,
                 DateOfBirth = user.DateOfBirth,
-            };
-
-            if (user.Address != null)
-            {
-                userModel.Address = new AddressModel
+                Address = user.Address == null ? null : new AddressModel
                 {
                     Id = user.Address.Id,
                     City = user.Address.City,
                     AddressLine = user.Address.AddressLine,
                     PostalCode = user.Address.PostalCode,
-                };
-            }
+                }
+            };
 
             return userModel;
         }
@@ -114,17 +110,13 @@ namespace BoardGameStore.Infrastructure.Shared.Mapping
                 Email = userModel.Email,
                 PhoneNumber = userModel.PhoneNumber,
                 DateOfBirth = userModel.DateOfBirth,
-            };
-
-            if (userModel.Address != null)
-            {
-                user.Address = new Address
+                Address = new Address
                 {
                     City = userModel.Address.City,
                     AddressLine = userModel.Address.AddressLine,
                     PostalCode = userModel.Address.PostalCode,
-                };
-            }
+                }
+            };
 
             return user;
         }

@@ -58,18 +58,9 @@ namespace BoardGameStore.Infrastructure.EFCore.Repositories
             userToUpdate.PhoneNumber = userModel.PhoneNumber;
             userToUpdate.DateOfBirth = userModel.DateOfBirth;
 
-            if (userModel.Address != null)
-            {
-                userToUpdate.Address ??= new Address();
-
-                userToUpdate.Address.City = userModel.Address.City;
-                userToUpdate.Address.AddressLine = userModel.Address.AddressLine;
-                userToUpdate.Address.PostalCode = userModel.Address.PostalCode;
-            }
-            else
-            {
-                userToUpdate.Address = null;
-            }
+            userToUpdate.Address.City = userModel.Address.City;
+            userToUpdate.Address.AddressLine = userModel.Address.AddressLine;
+            userToUpdate.Address.PostalCode = userModel.Address.PostalCode;
 
             await _context.SaveChangesAsync();
         }

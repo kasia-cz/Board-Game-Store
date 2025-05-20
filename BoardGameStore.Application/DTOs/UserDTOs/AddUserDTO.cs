@@ -21,6 +21,7 @@ namespace BoardGameStore.Application.DTOs.UserDTOs
         public string Email { get; set; }
 
         [Required]
+        [StringLength(20, MinimumLength = 7)]
         [Phone]
         public string PhoneNumber { get; set; }
 
@@ -28,6 +29,7 @@ namespace BoardGameStore.Application.DTOs.UserDTOs
         [DateOfBirthRange]
         public DateTime DateOfBirth { get; set; }
 
-        public AddAddressDTO? Address { get; set; }
+        [Required]
+        public AddAddressDTO Address { get; set; }
     }
 }

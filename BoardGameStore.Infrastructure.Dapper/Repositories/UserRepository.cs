@@ -28,17 +28,13 @@ namespace BoardGameStore.Infrastructure.Dapper.Repositories
             SELECT CAST(SCOPE_IDENTITY() as int);";
 
             var userId = await _connection.QuerySingleAsync<int>(userSql, user);
+            user.Address.UserId = userId;
 
-            if (user.Address != null)
-            {
-                user.Address.UserId = userId;
+            const string addressSql = @"
+            INSERT INTO Addresses (City, AddressLine, PostalCode, UserId)
+            VALUES (@City, @AddressLine, @PostalCode, @UserId);";
 
-                const string addressSql = @"
-                INSERT INTO Addresses (City, AddressLine, PostalCode, UserId)
-                VALUES (@City, @AddressLine, @PostalCode, @UserId);";
-
-                await _connection.ExecuteAsync(addressSql, user.Address);
-            }
+            await _connection.ExecuteAsync(addressSql, user.Address);
         }
 
         public async Task DeleteUser(int id)
@@ -71,6 +67,7 @@ namespace BoardGameStore.Infrastructure.Dapper.Repositories
         {
             var user = _mapper.MapUserModelToEntity(userModel);
             user.Id = id;
+            user.Address.UserId = id;
 
             const string userSql = @"
             UPDATE Users SET
@@ -83,35 +80,15 @@ namespace BoardGameStore.Infrastructure.Dapper.Repositories
 
             await _connection.ExecuteAsync(userSql, user);
 
-            if (user.Address != null)
-            {
-                user.Address.UserId = id;
-                const string hasAddressSql = "SELECT COUNT(1) FROM Addresses WHERE UserId = @UserId;";
-                string addressSql;
+            const string addressSql = @"
+            UPDATE Addresses SET
+                City = @City,
+                AddressLine = @AddressLine,
+                PostalCode = @PostalCode
+            WHERE UserId = @UserId;";
 
-                if (await _connection.ExecuteScalarAsync<bool>(hasAddressSql, new { UserId = id }))
-                {
-                    addressSql = @"
-                    UPDATE Addresses SET
-                        City = @City,
-                        AddressLine = @AddressLine,
-                        PostalCode = @PostalCode
-                    WHERE UserId = @UserId;";
-                }
-                else
-                {
-                    addressSql = @"
-                    INSERT INTO Addresses (City, AddressLine, PostalCode, UserId)
-                    VALUES (@City, @AddressLine, @PostalCode, @UserId);";
-                }
+            await _connection.ExecuteAsync(addressSql, user.Address);
 
-                await _connection.ExecuteAsync(addressSql, user.Address);
-            }
-            else
-            {
-                const string sqlDelete = "DELETE FROM Addresses WHERE UserId = @UserId;";
-                await _connection.ExecuteAsync(sqlDelete, new { UserId = id });
-            }
         }
     }
 }

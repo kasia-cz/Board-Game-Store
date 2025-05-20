@@ -36,11 +36,10 @@ namespace BoardGameStore.Application.Validation.FluentValidation.Validators
                 .NotEmpty()
                 .Must(date => IsValidAge(date, minAge, maxAge))
                 .WithMessage($"Date of birth must be between {DateTime.Today.AddYears(-maxAge):dd-MM-yyyy} and {DateTime.Today.AddYears(-minAge):dd-MM-yyyy}.");
-
-            When(x => x.Address != null, () =>
-            {
-                RuleFor(x => x.Address).SetValidator(new AddressValidator());
-            });
+            
+            RuleFor(x => x.Address)
+                .NotNull()
+                .SetValidator(new AddressValidator());
         }
 
         private static bool IsValidAge(DateTime date, int minAge, int maxAge)

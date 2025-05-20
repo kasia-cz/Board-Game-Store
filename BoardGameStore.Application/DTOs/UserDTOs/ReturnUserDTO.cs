@@ -14,6 +14,6 @@
 
         public DateTime DateOfBirth { get; set; }
 
-        public ReturnAddressDTO? Address { get; set; }
+        public ReturnAddressDTO Address { get; set; }
     }
 }

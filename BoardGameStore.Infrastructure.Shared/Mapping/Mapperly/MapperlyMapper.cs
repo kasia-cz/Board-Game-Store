@@ -23,5 +23,7 @@ namespace BoardGameStore.Infrastructure.Shared.Mapping.Mapperly
         public partial UserModel MapUserEntityToModel(User user);
 
         public partial User MapUserModelToEntity(UserModel userModel);
+
+        private partial AddressModel? MapAddress(Address? address);
     }
 }

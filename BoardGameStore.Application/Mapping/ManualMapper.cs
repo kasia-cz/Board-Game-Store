@@ -110,17 +110,13 @@ namespace BoardGameStore.Application.Mapping
                 Email = addUserDTO.Email,
                 PhoneNumber = addUserDTO.PhoneNumber,
                 DateOfBirth = addUserDTO.DateOfBirth,
-            };
-
-            if (addUserDTO.Address != null)
-            {
-                userModel.Address = new AddressModel
+                Address = new AddressModel
                 {
                     City = addUserDTO.Address.City,
                     AddressLine = addUserDTO.Address.AddressLine,
                     PostalCode = addUserDTO.Address.PostalCode,
-                };
-            }
+                }
+            };
 
             return userModel;
         }
@@ -135,18 +131,14 @@ namespace BoardGameStore.Application.Mapping
                 Email = userModel.Email,
                 PhoneNumber = userModel.PhoneNumber,
                 DateOfBirth = userModel.DateOfBirth,
-            };
-
-            if (userModel.Address != null)
-            {
-                userDTO.Address = new ReturnAddressDTO
+                Address = new ReturnAddressDTO
                 {
                     Id = userModel.Address.Id,
                     City = userModel.Address.City,
                     AddressLine = userModel.Address.AddressLine,
                     PostalCode = userModel.Address.PostalCode,
-                };
-            }
+                }
+            };
 
             return userDTO;
         }
