@@ -51,6 +51,8 @@ namespace BoardGameStore.WebAPI.Controllers
         [HttpPut("{id}")]
         public async Task<ActionResult> UpdateBoardGame(int id, AddBoardGameDTO addBoardGameDTO)
         {
+            _validationService.ValidateAndThrow(addBoardGameDTO);
+
             await _boardGameAppService.UpdateBoardGame(id, addBoardGameDTO);
             return NoContent();
         }
