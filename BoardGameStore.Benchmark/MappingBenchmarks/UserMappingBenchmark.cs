@@ -13,7 +13,7 @@ namespace BoardGameStore.Benchmark.MappingBenchmarks
     [MemoryDiagnoser]
     [CsvExporter]
     [MinColumn, MaxColumn]
-    public class MappingUserBenchmark
+    public class UserMappingBenchmark
     {
         private static readonly Random _random = new();
         private static readonly Faker _faker = new();

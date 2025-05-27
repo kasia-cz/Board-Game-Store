@@ -1,5 +1,6 @@
 ﻿using BenchmarkDotNet.Running;
 using BoardGameStore.Benchmark.MappingBenchmarks;
+using BoardGameStore.Benchmark.ValidationBenchmarks;
 
 namespace BoardGameStore.Benchmark
 {
@@ -7,9 +8,15 @@ namespace BoardGameStore.Benchmark
     {
         static void Main(string[] args)
         {
-            BenchmarkRunner.Run<MappingBoardGameBenchmark>();
-            BenchmarkRunner.Run<MappingUserBenchmark>();
-            BenchmarkRunner.Run<MappingOrderBenchmark>();
+            // Mapping benchmarks
+            BenchmarkRunner.Run<BoardGameMappingBenchmark>();
+            BenchmarkRunner.Run<UserMappingBenchmark>();
+            BenchmarkRunner.Run<OrderMappingBenchmark>();
+
+            // Validation benchmarks
+            BenchmarkRunner.Run<BoardGameValidationBenchmark>();
+            BenchmarkRunner.Run<UserValidationBenchmark>();
+            BenchmarkRunner.Run<OrderValidationBenchmark>();
         }
     }
 }

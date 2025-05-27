@@ -13,7 +13,7 @@ namespace BoardGameStore.Benchmark.MappingBenchmarks
     [MemoryDiagnoser]
     [CsvExporter]
     [MinColumn, MaxColumn]
-    public class MappingOrderBenchmark
+    public class OrderMappingBenchmark
     {
         private static readonly Random _random = new();
         private static readonly Faker _faker = new();
@@ -82,7 +82,7 @@ namespace BoardGameStore.Benchmark.MappingBenchmarks
                         MinPlayers = _random.Next(1, 4),
                         MaxPlayers = _random.Next(4, 6),
                         Difficulty = 0,
-                        AvailableQuantity = _random.Next(1, 100),
+                        AvailableQuantity = _random.Next(1, 1000),
                         Price = (decimal)Math.Round(_random.NextDouble() * 100 + 10, 2)
                     }
                 }).ToList()
