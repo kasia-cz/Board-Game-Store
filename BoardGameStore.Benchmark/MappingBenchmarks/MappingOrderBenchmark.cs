@@ -4,6 +4,7 @@ using BoardGameStore.Application.Mapping;
 using BoardGameStore.Application.Mapping.AutoMapper;
 using BoardGameStore.Application.Mapping.Mapperly;
 using BoardGameStore.Domain.Models;
+using Bogus;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace BoardGameStore.Benchmark.MappingBenchmarks
@@ -15,6 +16,8 @@ namespace BoardGameStore.Benchmark.MappingBenchmarks
     public class MappingOrderBenchmark
     {
         private static readonly Random _random = new();
+        private static readonly Faker _faker = new();
+
         private IMapper _manualMapper;
         private IMapper _mapperlyMapper;
         private IMapper _autoMapper;
@@ -74,7 +77,7 @@ namespace BoardGameStore.Benchmark.MappingBenchmarks
                     BoardGame = new BoardGameModel 
                     {
                         Id = _random.Next(1, 1000),
-                        Name = $"Game {_random.Next(1000, 9999)}",
+                        Name = _faker.Random.Word(),
                         Year = _random.Next(1950, 2025),
                         MinPlayers = _random.Next(1, 4),
                         MaxPlayers = _random.Next(4, 6),
