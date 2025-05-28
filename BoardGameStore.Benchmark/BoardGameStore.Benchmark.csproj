@@ -10,11 +10,13 @@
   <ItemGroup>
     <PackageReference Include="BenchmarkDotNet" Version="0.15.0" />
     <PackageReference Include="Bogus" Version="35.6.3" />
-    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="8.0.1" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="9.0.5" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\BoardGameStore.Application\BoardGameStore.Application.csproj" />
+    <ProjectReference Include="..\BoardGameStore.Infrastructure.Dapper\BoardGameStore.Infrastructure.Dapper.csproj" />
+    <ProjectReference Include="..\BoardGameStore.Infrastructure.EFCore\BoardGameStore.Infrastructure.EFCore.csproj" />
   </ItemGroup>
 
 </Project>
