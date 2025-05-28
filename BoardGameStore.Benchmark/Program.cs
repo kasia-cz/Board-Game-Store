@@ -1,5 +1,6 @@
 ﻿using BenchmarkDotNet.Running;
 using BoardGameStore.Benchmark.MappingBenchmarks;
+using BoardGameStore.Benchmark.ORMBenchmarks;
 using BoardGameStore.Benchmark.ValidationBenchmarks;
 
 namespace BoardGameStore.Benchmark
@@ -17,6 +18,11 @@ namespace BoardGameStore.Benchmark
             BenchmarkRunner.Run<BoardGameValidationBenchmark>();
             BenchmarkRunner.Run<UserValidationBenchmark>();
             BenchmarkRunner.Run<OrderValidationBenchmark>();
+
+            // ORM benchmarks
+            BenchmarkRunner.Run<BoardGameORMBenchmark>();
+            BenchmarkRunner.Run<UserORMBenchmark>();
+            BenchmarkRunner.Run<OrderORMBenchmark>();
         }
     }
 }
