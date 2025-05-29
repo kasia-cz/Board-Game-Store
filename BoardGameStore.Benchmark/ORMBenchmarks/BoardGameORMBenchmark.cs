@@ -31,6 +31,7 @@ namespace BoardGameStore.Benchmark.ORMBenchmarks
         private IBoardGameRepository _efcoreBoardGameRepository;
 
         private BoardGameModel boardGameModel;
+        private int id;
 
         [GlobalSetup]
         public void GlobalSetup()
@@ -64,6 +65,8 @@ namespace BoardGameStore.Benchmark.ORMBenchmarks
                 AvailableQuantity = _random.Next(1, 1000),
                 Price = (decimal)Math.Round(_random.NextDouble() * 100 + 10, 2)
             };
+
+            id = _random.Next(1, 201);
         }
 
         [IterationCleanup]
@@ -82,6 +85,42 @@ namespace BoardGameStore.Benchmark.ORMBenchmarks
         public async Task EFCore_AddBoardGame()
         {
             await _efcoreBoardGameRepository.AddBoardGame(boardGameModel);
+        }
+
+        [Benchmark]
+        public async Task Dapper_UpdateBoardGame()
+        {
+            await _dapperBoardGameRepository.UpdateBoardGame(id, boardGameModel);
+        }
+
+        [Benchmark]
+        public async Task EFCore_UpdateBoardGame()
+        {
+            await _efcoreBoardGameRepository.UpdateBoardGame(id, boardGameModel);
+        }
+
+        [Benchmark]
+        public async Task Dapper_GetBoardGameById()
+        {
+            await _dapperBoardGameRepository.GetBoardGameById(id);
+        }
+
+        [Benchmark]
+        public async Task EFCore_GetBoardGameById()
+        {
+            await _efcoreBoardGameRepository.GetBoardGameById(id);
+        }
+
+        [Benchmark]
+        public async Task Dapper_GetAllBoardGames()
+        {
+            await _dapperBoardGameRepository.GetAllBoardGames();
+        }
+
+        [Benchmark]
+        public async Task EFCore_GetAllBoardGames()
+        {
+            await _efcoreBoardGameRepository.GetAllBoardGames();
         }
     }
 }

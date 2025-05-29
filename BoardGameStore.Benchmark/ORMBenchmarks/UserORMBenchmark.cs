@@ -21,6 +21,7 @@ namespace BoardGameStore.Benchmark.ORMBenchmarks
     {
         private const string connectionString = "Server=.\\SQLExpress;Database=BoardGameStoreDB;Trusted_Connection=true;TrustServerCertificate=true;";
 
+        private static readonly Random _random = new();
         private static readonly Faker _faker = new();
 
         private IServiceScope _scope;
@@ -30,6 +31,7 @@ namespace BoardGameStore.Benchmark.ORMBenchmarks
         private IUserRepository _efcoreUserRepository;
 
         private UserModel userModel;
+        private int id;
 
         [GlobalSetup]
         public void GlobalSetup()
@@ -67,6 +69,8 @@ namespace BoardGameStore.Benchmark.ORMBenchmarks
                     PostalCode = _faker.Address.ZipCode("##-###")
                 }
             };
+
+            id = _random.Next(1, 201);
         }
 
         [IterationCleanup]
@@ -85,6 +89,42 @@ namespace BoardGameStore.Benchmark.ORMBenchmarks
         public async Task EFCore_AddUser()
         {
             await _efcoreUserRepository.AddUser(userModel);
+        }
+
+        [Benchmark]
+        public async Task Dapper_UpdateUser()
+        {
+            await _dapperUserRepository.UpdateUser(id, userModel);
+        }
+
+        [Benchmark]
+        public async Task EFCore_UpdateUser()
+        {
+            await _efcoreUserRepository.UpdateUser(id, userModel);
+        }
+
+        [Benchmark]
+        public async Task Dapper_GetUserById()
+        {
+            await _dapperUserRepository.GetUserById(id);
+        }
+
+        [Benchmark]
+        public async Task EFCore_GetUserById()
+        {
+            await _efcoreUserRepository.GetUserById(id);
+        }
+
+        [Benchmark]
+        public async Task Dapper_GetAllUsers()
+        {
+            await _dapperUserRepository.GetAllUsers();
+        }
+
+        [Benchmark]
+        public async Task EFCore_GetAllUsers()
+        {
+            await _efcoreUserRepository.GetAllUsers();
         }
     }
 }

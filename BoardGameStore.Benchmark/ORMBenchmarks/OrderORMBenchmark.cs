@@ -29,6 +29,8 @@ namespace BoardGameStore.Benchmark.ORMBenchmarks
         private IOrderRepository _efcoreOrderRepository;
 
         private OrderModel orderModel;
+        private int id;
+        private int userId;
 
         [GlobalSetup]
         public void GlobalSetup()
@@ -57,13 +59,16 @@ namespace BoardGameStore.Benchmark.ORMBenchmarks
                 Date = DateTime.Now,
                 TotalPrice = (decimal)Math.Round(_random.NextDouble() * 100 + 10, 2),
                 Status = 0,
-                UserId = _random.Next(1, 1000), // IDs 1-1000 must exist in the Users table
+                UserId = _random.Next(1, 201), // IDs 1-200 must exist in the Users table
                 Items = Enumerable.Range(0, _random.Next(1, 5)).Select(_ => new OrderItemModel
                 {
                     Quantity = _random.Next(1, 101),
-                    BoardGameId = _random.Next(1, 1000), // IDs 1-1000 must exist in the BoardGames table
+                    BoardGameId = _random.Next(1, 201), // IDs 1-200 must exist in the BoardGames table
                 }).ToList()
             };
+
+            id = _random.Next(1, 201);
+            userId = _random.Next(1, 201);
         }
 
         [IterationCleanup]
@@ -82,6 +87,42 @@ namespace BoardGameStore.Benchmark.ORMBenchmarks
         public async Task EFCore_AddOrder()
         {
             await _efcoreOrderRepository.AddOrder(orderModel);
+        }
+
+        [Benchmark]
+        public async Task Dapper_GetOrderById()
+        {
+            await _dapperOrderRepository.GetOrderById(id);
+        }
+
+        [Benchmark]
+        public async Task EFCore_GetOrderById()
+        {
+            await _efcoreOrderRepository.GetOrderById(id);
+        }
+
+        [Benchmark]
+        public async Task Dapper_GetAllOrders()
+        {
+            await _dapperOrderRepository.GetAllOrders();
+        }
+
+        [Benchmark]
+        public async Task EFCore_GetAllOrders()
+        {
+            await _efcoreOrderRepository.GetAllOrders();
+        }
+
+        [Benchmark]
+        public async Task Dapper_GetUserOrders()
+        {
+            await _dapperOrderRepository.GetUserOrders(userId);
+        }
+
+        [Benchmark]
+        public async Task EFCore_GetUserOrders()
+        {
+            await _efcoreOrderRepository.GetUserOrders(userId);
         }
     }
 }
