@@ -13,7 +13,7 @@ using EFCoreUserRepository = BoardGameStore.Infrastructure.EFCore.Repositories.U
 
 namespace BoardGameStore.Benchmark.ORMBenchmarks
 {
-    [SimpleJob(launchCount: 1, warmupCount: 3, iterationCount: 20, invocationCount: 5)]
+    [SimpleJob(launchCount: 1, warmupCount: 3, iterationCount: 100, invocationCount: 1)]
     [MemoryDiagnoser]
     [CsvExporter]
     [MinColumn, MaxColumn]
@@ -80,7 +80,7 @@ namespace BoardGameStore.Benchmark.ORMBenchmarks
         }
 
         [Benchmark]
-        public async Task Dapper_AddBoardGame()
+        public async Task Dapper_AddUser()
         {
             await _dapperUserRepository.AddUser(userModel);
         }

@@ -12,7 +12,7 @@ using EFCoreOrderRepository = BoardGameStore.Infrastructure.EFCore.Repositories.
 
 namespace BoardGameStore.Benchmark.ORMBenchmarks
 {
-    [SimpleJob(launchCount: 1, warmupCount: 3, iterationCount: 20, invocationCount: 5)]
+    [SimpleJob(launchCount: 1, warmupCount: 3, iterationCount: 100, invocationCount: 1)]
     [MemoryDiagnoser]
     [CsvExporter]
     [MinColumn, MaxColumn]
@@ -62,7 +62,7 @@ namespace BoardGameStore.Benchmark.ORMBenchmarks
                 UserId = _random.Next(1, 201), // IDs 1-200 must exist in the Users table
                 Items = Enumerable.Range(0, _random.Next(1, 5)).Select(_ => new OrderItemModel
                 {
-                    Quantity = _random.Next(1, 101),
+                    Quantity = _random.Next(1, 21),
                     BoardGameId = _random.Next(1, 201), // IDs 1-200 must exist in the BoardGames table
                 }).ToList()
             };
@@ -78,7 +78,7 @@ namespace BoardGameStore.Benchmark.ORMBenchmarks
         }
 
         [Benchmark]
-        public async Task Dapper_AddBoardGame()
+        public async Task Dapper_AddOrder()
         {
             await _dapperOrderRepository.AddOrder(orderModel);
         }

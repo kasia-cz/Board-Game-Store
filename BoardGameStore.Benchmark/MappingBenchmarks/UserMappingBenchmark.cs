@@ -9,7 +9,7 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace BoardGameStore.Benchmark.MappingBenchmarks
 {
-    [SimpleJob(launchCount: 1, warmupCount: 3, iterationCount: 20, invocationCount: 5)]
+    [SimpleJob(launchCount: 1, warmupCount: 3, iterationCount: 100, invocationCount: 1)]
     [MemoryDiagnoser]
     [CsvExporter]
     [MinColumn, MaxColumn]
