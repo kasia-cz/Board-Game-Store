@@ -3,6 +3,7 @@ using BoardGameStore.Domain.Models;
 using BoardGameStore.Domain.RepositoryInterfaces;
 using BoardGameStore.Infrastructure.EFCore;
 using BoardGameStore.Infrastructure.Shared.Mapping;
+using BoardGameStore.Infrastructure.Shared.Mapping.Mapperly;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
@@ -30,13 +31,12 @@ namespace BoardGameStore.Benchmark.ORMBenchmarks
 
         private OrderModel orderModel;
         private int id;
-        private int userId;
 
         [GlobalSetup]
         public void GlobalSetup()
         {
             var services = new ServiceCollection();
-            services.AddScoped<IMapper, ManualMapper>();
+            services.AddScoped<IMapper, MapperlyMapper>();
             services.AddScoped<IOrderRepository, DapperOrderRepository>();
             services.AddTransient<IDbConnection>(_ => new SqlConnection(connectionString));
             services.AddScoped<IOrderRepository, EFCoreOrderRepository>();
@@ -59,16 +59,15 @@ namespace BoardGameStore.Benchmark.ORMBenchmarks
                 Date = DateTime.Now,
                 TotalPrice = (decimal)Math.Round(_random.NextDouble() * 100 + 10, 2),
                 Status = 0,
-                UserId = _random.Next(1, 201), // IDs 1-200 must exist in the Users table
+                UserId = _random.Next(1, 1001), // IDs 1-1000 must exist in the Users table
                 Items = Enumerable.Range(0, _random.Next(1, 5)).Select(_ => new OrderItemModel
                 {
                     Quantity = _random.Next(1, 21),
-                    BoardGameId = _random.Next(1, 201), // IDs 1-200 must exist in the BoardGames table
+                    BoardGameId = _random.Next(1, 1001), // IDs 1-1000 must exist in the BoardGames table
                 }).ToList()
             };
 
-            id = _random.Next(1, 201);
-            userId = _random.Next(1, 201);
+            id = _random.Next(1, 1001);
         }
 
         [IterationCleanup]
@@ -76,6 +75,8 @@ namespace BoardGameStore.Benchmark.ORMBenchmarks
         {
             _scope.Dispose();
         }
+
+        // for benchmarks below: there must be 1000 board games and 1000 users in the DB before running them
 
         [Benchmark]
         public async Task Dapper_AddOrder()
@@ -88,6 +89,8 @@ namespace BoardGameStore.Benchmark.ORMBenchmarks
         {
             await _efcoreOrderRepository.AddOrder(orderModel);
         }
+
+        // for benchmarks below: there must be 1000 orders and 1000 users in the DB before running them
 
         [Benchmark]
         public async Task Dapper_GetOrderById()
@@ -116,13 +119,13 @@ namespace BoardGameStore.Benchmark.ORMBenchmarks
         [Benchmark]
         public async Task Dapper_GetUserOrders()
         {
-            await _dapperOrderRepository.GetUserOrders(userId);
+            await _dapperOrderRepository.GetUserOrders(id);
         }
 
         [Benchmark]
         public async Task EFCore_GetUserOrders()
         {
-            await _efcoreOrderRepository.GetUserOrders(userId);
+            await _efcoreOrderRepository.GetUserOrders(id);
         }
     }
 }

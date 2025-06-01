@@ -3,6 +3,7 @@ using BoardGameStore.Domain.Models;
 using BoardGameStore.Domain.RepositoryInterfaces;
 using BoardGameStore.Infrastructure.EFCore;
 using BoardGameStore.Infrastructure.Shared.Mapping;
+using BoardGameStore.Infrastructure.Shared.Mapping.Mapperly;
 using Bogus;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
@@ -33,11 +34,15 @@ namespace BoardGameStore.Benchmark.ORMBenchmarks
         private UserModel userModel;
         private int id;
 
+        private List<int> mixedIds = Enumerable.Range(1, 1000).OrderBy(_ => _random.Next()).ToList();
+        private int idToDelete;
+        private int i = 0;
+
         [GlobalSetup]
         public void GlobalSetup()
         {
             var services = new ServiceCollection();
-            services.AddScoped<IMapper, ManualMapper>();
+            services.AddScoped<IMapper, MapperlyMapper>();
             services.AddScoped<IUserRepository, DapperUserRepository>();
             services.AddTransient<IDbConnection>(_ => new SqlConnection(connectionString));
             services.AddScoped<IUserRepository, EFCoreUserRepository>();
@@ -70,7 +75,10 @@ namespace BoardGameStore.Benchmark.ORMBenchmarks
                 }
             };
 
-            id = _random.Next(1, 201);
+            id = _random.Next(1, 1001);
+
+            idToDelete = mixedIds[i];
+            i++;
         }
 
         [IterationCleanup]
@@ -90,6 +98,8 @@ namespace BoardGameStore.Benchmark.ORMBenchmarks
         {
             await _efcoreUserRepository.AddUser(userModel);
         }
+
+        // for benchmarks below: there must be 1000 users in the DB before running them
 
         [Benchmark]
         public async Task Dapper_UpdateUser()
@@ -125,6 +135,20 @@ namespace BoardGameStore.Benchmark.ORMBenchmarks
         public async Task EFCore_GetAllUsers()
         {
             await _efcoreUserRepository.GetAllUsers();
+        }
+
+        // for benchmarks below: run them separately to start both with 1000 users in the DB (end with 900)
+
+        [Benchmark]
+        public async Task Dapper_DeleteUser()
+        {
+            await _dapperUserRepository.DeleteUser(idToDelete);
+        }
+
+        [Benchmark]
+        public async Task EFCore_DeleteUser()
+        {
+            await _efcoreUserRepository.DeleteUser(idToDelete);
         }
     }
 }

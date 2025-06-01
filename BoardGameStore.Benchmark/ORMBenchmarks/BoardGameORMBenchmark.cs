@@ -3,6 +3,7 @@ using BoardGameStore.Domain.Models;
 using BoardGameStore.Domain.RepositoryInterfaces;
 using BoardGameStore.Infrastructure.EFCore;
 using BoardGameStore.Infrastructure.Shared.Mapping;
+using BoardGameStore.Infrastructure.Shared.Mapping.Mapperly;
 using Bogus;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
@@ -33,11 +34,15 @@ namespace BoardGameStore.Benchmark.ORMBenchmarks
         private BoardGameModel boardGameModel;
         private int id;
 
+        private List<int> mixedIds = Enumerable.Range(1, 1000).OrderBy(_ => _random.Next()).ToList();
+        private int idToDelete;
+        private int i = 0;
+
         [GlobalSetup]
         public void GlobalSetup()
         {
             var services = new ServiceCollection();
-            services.AddScoped<IMapper, ManualMapper>();
+            services.AddScoped<IMapper, MapperlyMapper>();
             services.AddScoped<IBoardGameRepository, DapperBoardGameRepository>();
             services.AddTransient<IDbConnection>(_ => new SqlConnection(connectionString));
             services.AddScoped<IBoardGameRepository, EFCoreBoardGameRepository>();
@@ -66,7 +71,10 @@ namespace BoardGameStore.Benchmark.ORMBenchmarks
                 Price = (decimal)Math.Round(_random.NextDouble() * 100 + 10, 2)
             };
 
-            id = _random.Next(1, 201);
+            id = _random.Next(1, 1001);
+
+            idToDelete = mixedIds[i];
+            i++;
         }
 
         [IterationCleanup]
@@ -86,6 +94,8 @@ namespace BoardGameStore.Benchmark.ORMBenchmarks
         {
             await _efcoreBoardGameRepository.AddBoardGame(boardGameModel);
         }
+
+        // for benchmarks below: there must be 1000 board games in the DB before running them
 
         [Benchmark]
         public async Task Dapper_UpdateBoardGame()
@@ -121,6 +131,20 @@ namespace BoardGameStore.Benchmark.ORMBenchmarks
         public async Task EFCore_GetAllBoardGames()
         {
             await _efcoreBoardGameRepository.GetAllBoardGames();
+        }
+
+        // for benchmarks below: run them separately to start both with 1000 board games in the DB (end with 900)
+
+        [Benchmark]
+        public async Task Dapper_DeleteBoardGame()
+        {
+            await _dapperBoardGameRepository.DeleteBoardGame(idToDelete);
+        }
+
+        [Benchmark]
+        public async Task EFCore_DeleteBoardGame()
+        {
+            await _efcoreBoardGameRepository.DeleteBoardGame(idToDelete);
         }
     }
 }
